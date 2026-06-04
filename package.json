@@ -1,0 +1,29 @@
+{
+  "name": "@rome/opencode-mcp",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "description": "MCP server wrapping the local OpenCode HTTP API",
+  "bin": {
+    "opencode-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "generate": "curl -sf https://raw.githubusercontent.com/anomalyco/opencode/dev/packages/sdk/openapi.json -o openapi.json && openapi-typescript openapi.json -o src/openapi.d.ts",
+    "pretest": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:mcp": "vitest run tests/mcp.test.ts",
+    "dev": "node --watch dist/index.js",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "openapi-typescript": "^7.13.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.8"
+  }
+}
