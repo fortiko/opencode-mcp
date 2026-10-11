@@ -4,6 +4,8 @@ export const BASE_URL = process.env.OPENCODE_URL ?? "http://localhost:4096";
 export const DEFAULT_PROVIDER = process.env.OPENCODE_DEFAULT_PROVIDER ?? "opencode";
 export const DEFAULT_MODEL = process.env.OPENCODE_DEFAULT_MODEL ?? "big-pickle";
 export const API_KEY = process.env.OPENCODE_API_KEY ?? "";
+export const USERNAME = process.env.OPENCODE_USERNAME ?? "opencode";
+export const PASSWORD = process.env.OPENCODE_PASSWORD ?? "";
 
 // Spec-derived types — regenerate with `npm run generate` when OpenCode updates its API
 export type Session = components["schemas"]["Session"];
@@ -25,7 +27,12 @@ export async function api<T>(
   }
   const headers: Record<string, string> = {};
   if (body) headers["Content-Type"] = "application/json";
-  if (API_KEY) headers["Authorization"] = `Bearer ${API_KEY}`;
+  if (PASSWORD) {
+    const token = Buffer.from(`${USERNAME}:${PASSWORD}`).toString("base64");
+    headers["Authorization"] = `Basic ${token}`;
+  } else if (API_KEY) {
+    headers["Authorization"] = `Bearer ${API_KEY}`;
+  }
 
   const res = await fetch(url.toString(), {
     method,

@@ -48,6 +48,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/experimental/control-plane/move-session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Move session
+         * @description Move a session to another project directory, optionally transferring local changes.
+         */
+        post: operations["experimental.controlPlane.moveSession"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/global/health": {
         parameters: {
             query?: never;
@@ -143,7 +163,7 @@ export interface paths {
         put?: never;
         /**
          * Upgrade opencode
-         * @description Upgrade opencode to the specified version or latest if not specified.
+         * @description Upgrade opencode to the specified version.
          */
         post: operations["global.upgrade"];
         delete?: never;
@@ -208,6 +228,26 @@ export interface paths {
          * @description Get a list of all configured AI providers and their default models.
          */
         get: operations["config.providers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/experimental/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get experimental capabilities
+         * @description Get experimental features enabled on the OpenCode server.
+         */
+        get: operations["experimental.capabilities.get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -378,6 +418,26 @@ export interface paths {
         get: operations["experimental.session.list"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/experimental/session/{sessionID}/background": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Background subagents
+         * @description Detach any synchronous subagents currently blocking the session and continue them in the background.
+         */
+        post: operations["experimental.session.background"];
         delete?: never;
         options?: never;
         head?: never;
@@ -986,7 +1046,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/experimental/project/{projectID}/copy": {
+    "/experimental/project/{projectID}/copy/generate-name": {
         parameters: {
             query?: never;
             header?: never;
@@ -996,34 +1056,10 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Create project copy
-         * @description Create a local physical copy of a project using the selected strategy.
+         * Generate project copy name
+         * @description Generate a short name for a project copy from task context.
          */
-        post: operations["experimental.projectCopy.create"];
-        /**
-         * Remove project copy
-         * @description Remove a local physical copy of a project using the selected strategy.
-         */
-        delete: operations["experimental.projectCopy.remove"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/experimental/project/{projectID}/copy/refresh": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Refresh project copies
-         * @description Discover local project copies using one or all configured strategies.
-         */
-        post: operations["experimental.projectCopy.refresh"];
+        post: operations["experimental.projectCopy.generateName"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2197,10 +2233,30 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Check v2 server health
-         * @description Check whether the v2 API server is ready to accept requests.
+         * Check server health
+         * @description Check whether the API server is ready to accept requests.
          */
         get: operations["v2.health.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/location": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get location
+         * @description Resolve the requested location or the server default location.
+         */
+        get: operations["v2.location.get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2217,8 +2273,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List v2 agents
-         * @description Retrieve currently registered v2 agents.
+         * List agents
+         * @description Retrieve currently registered agents.
          */
         get: operations["v2.agent.list"];
         put?: never;
@@ -2237,12 +2293,96 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List v2 sessions
+         * List sessions
          * @description Retrieve sessions in the requested order. Items keep that order across pages; use cursor.next or cursor.previous to move through the ordered list.
          */
         get: operations["v2.session.list"];
         put?: never;
+        /**
+         * Create session
+         * @description Create a session at the requested location.
+         */
+        post: operations["v2.session.create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/active": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List active sessions
+         * @description Retrieve foreground Session drains currently owned by this OpenCode process. Sessions absent from the result are inactive.
+         */
+        get: operations["v2.session.active"];
+        put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get session
+         * @description Retrieve a session by ID.
+         */
+        get: operations["v2.session.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/agent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Switch session agent
+         * @description Switch the agent used by subsequent provider turns.
+         */
+        post: operations["v2.session.switchAgent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/model": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Switch session model
+         * @description Switch the model used by subsequent provider turns.
+         */
+        post: operations["v2.session.switchModel"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2259,8 +2399,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Send v2 message
-         * @description Durably admit one v2 session input and schedule agent-loop execution unless resume is false.
+         * Send message
+         * @description Durably admit one session input and schedule agent-loop execution unless resume is false.
          */
         post: operations["v2.session.prompt"];
         delete?: never;
@@ -2279,8 +2419,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Compact v2 session
-         * @description Compact a v2 session conversation.
+         * Compact session
+         * @description Compact a session conversation.
          */
         post: operations["v2.session.compact"];
         delete?: never;
@@ -2299,10 +2439,64 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Wait for v2 session
-         * @description Wait for a v2 session agent loop to become idle.
+         * Wait for session
+         * @description Wait for a session agent loop to become idle.
          */
         post: operations["v2.session.wait"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/revert/stage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Stage session revert
+         * @description Stage or move a reversible session boundary and optionally apply its file changes.
+         */
+        post: operations["v2.session.revert.stage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/revert/clear": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Clear staged revert */
+        post: operations["v2.session.revert.clear"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/revert/commit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Commit staged revert */
+        post: operations["v2.session.revert.commit"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2317,10 +2511,90 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get v2 session context
-         * @description Retrieve the active context messages for a v2 session (all messages after the last compaction).
+         * Get session context
+         * @description Retrieve the active context messages for a session (all messages after the last compaction).
          */
         get: operations["v2.session.context"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get session history
+         * @description Read one finite page of public durable Session events after an exclusive aggregate sequence. Newly committed events may appear on later pages.
+         */
+        get: operations["v2.session.history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/event": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Subscribe to session events
+         * @description Replay durable events after an aggregate sequence, then continue with new durable events.
+         */
+        get: operations["v2.session.events"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/interrupt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Interrupt session execution
+         * @description Interrupt active execution owned by this OpenCode process. Idle interruption is a no-op.
+         */
+        post: operations["v2.session.interrupt"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/message/{messageID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get session message
+         * @description Retrieve one projected message owned by the Session.
+         */
+        get: operations["v2.session.message"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2337,8 +2611,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get v2 session messages
-         * @description Retrieve projected v2 messages for a session. Items keep the requested order across pages; use cursor.next or cursor.previous to move through the ordered timeline.
+         * Get session messages
+         * @description Retrieve projected messages for a session. Items keep the requested order across pages; use cursor.next or cursor.previous to move through the ordered timeline.
          */
         get: operations["v2.session.messages"];
         put?: never;
@@ -2357,8 +2631,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List v2 models
-         * @description Retrieve available v2 models ordered by release date.
+         * List models
+         * @description Retrieve available models ordered by release date.
          */
         get: operations["v2.model.list"];
         put?: never;
@@ -2377,8 +2651,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List v2 providers
-         * @description Retrieve active v2 AI providers so clients can show provider availability and configuration.
+         * List providers
+         * @description Retrieve active AI providers so clients can show provider availability and configuration.
          */
         get: operations["v2.provider.list"];
         put?: never;
@@ -2397,8 +2671,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get v2 provider
-         * @description Retrieve a single v2 AI provider so clients can inspect its availability and endpoint settings.
+         * Get provider
+         * @description Retrieve a single AI provider so clients can inspect its availability and endpoint settings.
          */
         get: operations["v2.provider.get"];
         put?: never;
@@ -2407,6 +2681,154 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/integration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List integrations
+         * @description Retrieve available integrations and their authentication methods.
+         */
+        get: operations["v2.integration.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/integration/{integrationID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get integration
+         * @description Retrieve one integration and its authentication methods.
+         */
+        get: operations["v2.integration.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/integration/{integrationID}/connect/key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Connect with key
+         * @description Run a key authentication method and store the resulting credential.
+         */
+        post: operations["v2.integration.connect.key"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/integration/{integrationID}/connect/oauth": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Begin OAuth connection
+         * @description Start an OAuth attempt and return the authorization details.
+         */
+        post: operations["v2.integration.connect.oauth"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/integration/attempt/{attemptID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get OAuth attempt status
+         * @description Poll the current status of an OAuth attempt.
+         */
+        get: operations["v2.integration.attempt.status"];
+        put?: never;
+        post?: never;
+        /**
+         * Cancel OAuth connection
+         * @description Cancel an OAuth attempt and release its resources.
+         */
+        delete: operations["v2.integration.attempt.cancel"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/integration/attempt/{attemptID}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Complete OAuth connection
+         * @description Complete a code-based OAuth attempt and store the resulting credential.
+         */
+        post: operations["v2.integration.attempt.complete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/credential/{credentialID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove credential
+         * @description Remove a stored integration credential.
+         */
+        delete: operations["v2.credential.remove"];
+        options?: never;
+        head?: never;
+        /**
+         * Update credential
+         * @description Update a stored credential label.
+         */
+        patch: operations["v2.credential.update"];
         trace?: never;
     };
     "/api/permission/request": {
@@ -2423,46 +2845,6 @@ export interface paths {
         get: operations["v2.permission.request.list"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/session/{sessionID}/permission/request": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List session permission requests
-         * @description Retrieve pending permission requests owned by a session.
-         */
-        get: operations["v2.session.permission.list"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/session/{sessionID}/permission/request/{requestID}/reply": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reply to pending permission request
-         * @description Respond to a pending permission request owned by a session.
-         */
-        post: operations["v2.session.permission.reply"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2509,7 +2891,71 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/fs/read": {
+    "/api/session/{sessionID}/permission": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List session permission requests
+         * @description Retrieve pending permission requests owned by a session.
+         */
+        get: operations["v2.session.permission.list"];
+        put?: never;
+        /**
+         * Create permission request
+         * @description Evaluate and, when approval is required, create a permission request for a session.
+         */
+        post: operations["v2.session.permission.create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/permission/{requestID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get permission request
+         * @description Retrieve a pending permission request owned by a session.
+         */
+        get: operations["v2.session.permission.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/permission/{requestID}/reply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reply to pending permission request
+         * @description Respond to a pending permission request owned by a session.
+         */
+        post: operations["v2.session.permission.reply"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fs/read/*": {
         parameters: {
             query?: never;
             header?: never;
@@ -2518,7 +2964,7 @@ export interface paths {
         };
         /**
          * Read file
-         * @description Read one file relative to the requested location.
+         * @description Serve one file relative to the requested location.
          */
         get: operations["v2.fs.read"];
         put?: never;
@@ -2549,6 +2995,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/fs/find": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Find files
+         * @description Find recursively ranked filesystem entries relative to the requested location.
+         */
+        get: operations["v2.fs.find"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/command": {
         parameters: {
             query?: never;
@@ -2557,8 +3023,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List v2 commands
-         * @description Retrieve currently registered v2 commands.
+         * List commands
+         * @description Retrieve currently registered commands.
          */
         get: operations["v2.command.list"];
         put?: never;
@@ -2577,8 +3043,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List v2 skills
-         * @description Retrieve currently registered v2 skills.
+         * List skills
+         * @description Retrieve currently registered skills.
          */
         get: operations["v2.skill.list"];
         put?: never;
@@ -2597,10 +3063,102 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Subscribe to v2 events
-         * @description Subscribe to native EventV2 payloads for a location.
+         * Subscribe to events
+         * @description Subscribe to native event payloads for the server.
          */
         get: operations["v2.event.subscribe"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pty": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List PTY sessions
+         * @description List PTY sessions for a location, including exited sessions retained until removal.
+         */
+        get: operations["v2.pty.list"];
+        put?: never;
+        /**
+         * Create PTY session
+         * @description Create a pseudo-terminal session for a location.
+         */
+        post: operations["v2.pty.create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pty/{ptyID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get PTY session
+         * @description Get one PTY session, including its exit code once exited.
+         */
+        get: operations["v2.pty.get"];
+        /**
+         * Update PTY session
+         * @description Update the title or viewport size of one PTY session.
+         */
+        put: operations["v2.pty.update"];
+        post?: never;
+        /**
+         * Remove PTY session
+         * @description Terminate and remove one PTY session.
+         */
+        delete: operations["v2.pty.remove"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pty/{ptyID}/connect-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create PTY WebSocket token
+         * @description Create a short-lived single-use ticket for opening a PTY WebSocket connection.
+         */
+        post: operations["v2.pty.connectToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pty/{ptyID}/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Connect to PTY session
+         * @description Establish a WebSocket connection streaming PTY output and accepting terminal input.
+         */
+        get: operations["v2.pty.connect"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2629,7 +3187,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/session/{sessionID}/question/request/{requestID}/reply": {
+    "/api/session/{sessionID}/question": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List session question requests
+         * @description Retrieve pending question requests owned by a session.
+         */
+        get: operations["v2.session.question.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/session/{sessionID}/question/{requestID}/reply": {
         parameters: {
             query?: never;
             header?: never;
@@ -2649,7 +3227,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/session/{sessionID}/question/request/{requestID}/reject": {
+    "/api/session/{sessionID}/question/{requestID}/reject": {
         parameters: {
             query?: never;
             header?: never;
@@ -2663,6 +3241,58 @@ export interface paths {
          * @description Reject a pending question request owned by a session.
          */
         post: operations["v2.session.question.reject"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reference": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List references
+         * @description List references available in the requested location.
+         */
+        get: operations["v2.reference.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/experimental/project/{projectID}/copy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["v2.projectCopy.create"];
+        delete: operations["v2.projectCopy.remove"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/experimental/project/{projectID}/copy/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["v2.projectCopy.refresh"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2693,7 +3323,7 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        Event: components["schemas"]["EventModels-devRefreshed"] | components["schemas"]["EventPluginAdded"] | components["schemas"]["EventCatalogModelUpdated"] | components["schemas"]["EventSessionCreated"] | components["schemas"]["EventSessionUpdated"] | components["schemas"]["EventSessionDeleted"] | components["schemas"]["EventMessageUpdated"] | components["schemas"]["EventMessageRemoved"] | components["schemas"]["EventMessagePartUpdated"] | components["schemas"]["EventMessagePartRemoved"] | components["schemas"]["EventSessionNextAgentSwitched"] | components["schemas"]["EventSessionNextModelSwitched"] | components["schemas"]["EventSessionNextPrompted"] | components["schemas"]["EventSessionNextSynthetic"] | components["schemas"]["EventSessionNextShellStarted"] | components["schemas"]["EventSessionNextShellEnded"] | components["schemas"]["EventSessionNextStepStarted"] | components["schemas"]["EventSessionNextStepEnded"] | components["schemas"]["EventSessionNextStepFailed"] | components["schemas"]["EventSessionNextTextStarted"] | components["schemas"]["EventSessionNextTextDelta"] | components["schemas"]["EventSessionNextTextEnded"] | components["schemas"]["EventSessionNextReasoningStarted"] | components["schemas"]["EventSessionNextReasoningDelta"] | components["schemas"]["EventSessionNextReasoningEnded"] | components["schemas"]["EventSessionNextToolInputStarted"] | components["schemas"]["EventSessionNextToolInputDelta"] | components["schemas"]["EventSessionNextToolInputEnded"] | components["schemas"]["EventSessionNextToolCalled"] | components["schemas"]["EventSessionNextToolProgress"] | components["schemas"]["EventSessionNextToolSuccess"] | components["schemas"]["EventSessionNextToolFailed"] | components["schemas"]["EventSessionNextRetried"] | components["schemas"]["EventSessionNextCompactionStarted"] | components["schemas"]["EventSessionNextCompactionDelta"] | components["schemas"]["EventSessionNextCompactionEnded"] | components["schemas"]["EventMessagePartDelta"] | components["schemas"]["EventSessionDiff"] | components["schemas"]["EventSessionError"] | components["schemas"]["EventInstallationUpdated"] | components["schemas"]["EventInstallationUpdate-available"] | components["schemas"]["EventFileEdited"] | components["schemas"]["EventAccountAdded"] | components["schemas"]["EventAccountRemoved"] | components["schemas"]["EventAccountSwitched"] | components["schemas"]["EventPermissionV2Asked"] | components["schemas"]["EventPermissionV2Replied"] | components["schemas"]["EventFileWatcherUpdated"] | components["schemas"]["EventPtyCreated"] | components["schemas"]["EventPtyUpdated"] | components["schemas"]["EventPtyExited"] | components["schemas"]["EventPtyDeleted"] | components["schemas"]["EventQuestionV2Asked"] | components["schemas"]["EventQuestionV2Replied"] | components["schemas"]["EventQuestionV2Rejected"] | components["schemas"]["EventTodoUpdated"] | components["schemas"]["EventLspUpdated"] | components["schemas"]["EventPermissionAsked"] | components["schemas"]["EventPermissionReplied"] | components["schemas"]["Event.tui.prompt.append"] | components["schemas"]["Event.tui.command.execute"] | components["schemas"]["Event.tui.toast.show"] | components["schemas"]["Event.tui.session.select"] | components["schemas"]["EventMcpToolsChanged"] | components["schemas"]["EventMcpBrowserOpenFailed"] | components["schemas"]["EventCommandExecuted"] | components["schemas"]["EventProjectDirectoriesUpdated"] | components["schemas"]["EventProjectUpdated"] | components["schemas"]["EventQuestionAsked"] | components["schemas"]["EventQuestionReplied"] | components["schemas"]["EventQuestionRejected"] | components["schemas"]["EventSessionStatus"] | components["schemas"]["EventSessionIdle"] | components["schemas"]["EventSessionCompacted"] | components["schemas"]["EventVcsBranchUpdated"] | components["schemas"]["EventWorktreeReady"] | components["schemas"]["EventWorktreeFailed"] | components["schemas"]["EventWorkspaceReady"] | components["schemas"]["EventWorkspaceFailed"] | components["schemas"]["EventWorkspaceStatus"] | components["schemas"]["EventServerConnected"] | components["schemas"]["EventGlobalDisposed"] | components["schemas"]["EventServerInstanceDisposed"];
+        Event: components["schemas"]["EventModels-devRefreshed"] | components["schemas"]["EventIntegrationUpdated"] | components["schemas"]["EventIntegrationConnectionUpdated"] | components["schemas"]["EventCatalogUpdated"] | components["schemas"]["EventSessionCreated"] | components["schemas"]["EventSessionUpdated"] | components["schemas"]["EventSessionDeleted"] | components["schemas"]["EventMessageUpdated"] | components["schemas"]["EventMessageRemoved"] | components["schemas"]["EventMessagePartUpdated"] | components["schemas"]["EventMessagePartRemoved"] | components["schemas"]["EventSessionNextAgentSwitched"] | components["schemas"]["EventSessionNextModelSwitched"] | components["schemas"]["EventSessionNextMoved"] | components["schemas"]["EventSessionNextPrompted"] | components["schemas"]["EventSessionNextPromptAdmitted"] | components["schemas"]["EventSessionNextContextUpdated"] | components["schemas"]["EventSessionNextSynthetic"] | components["schemas"]["EventSessionNextShellStarted"] | components["schemas"]["EventSessionNextShellEnded"] | components["schemas"]["EventSessionNextStepStarted"] | components["schemas"]["EventSessionNextStepEnded"] | components["schemas"]["EventSessionNextStepFailed"] | components["schemas"]["EventSessionNextTextStarted"] | components["schemas"]["EventSessionNextTextDelta"] | components["schemas"]["EventSessionNextTextEnded"] | components["schemas"]["EventSessionNextReasoningStarted"] | components["schemas"]["EventSessionNextReasoningDelta"] | components["schemas"]["EventSessionNextReasoningEnded"] | components["schemas"]["EventSessionNextToolInputStarted"] | components["schemas"]["EventSessionNextToolInputDelta"] | components["schemas"]["EventSessionNextToolInputEnded"] | components["schemas"]["EventSessionNextToolCalled"] | components["schemas"]["EventSessionNextToolProgress"] | components["schemas"]["EventSessionNextToolSuccess"] | components["schemas"]["EventSessionNextToolFailed"] | components["schemas"]["EventSessionNextRetried"] | components["schemas"]["EventSessionNextCompactionStarted"] | components["schemas"]["EventSessionNextCompactionDelta"] | components["schemas"]["EventSessionNextCompactionEnded"] | components["schemas"]["EventSessionNextRevertStaged"] | components["schemas"]["EventSessionNextRevertCleared"] | components["schemas"]["EventSessionNextRevertCommitted"] | components["schemas"]["EventMessagePartDelta"] | components["schemas"]["EventSessionDiff"] | components["schemas"]["EventSessionError"] | components["schemas"]["EventInstallationUpdated"] | components["schemas"]["EventInstallationUpdate-available"] | components["schemas"]["EventFileEdited"] | components["schemas"]["EventReferenceUpdated"] | components["schemas"]["EventPermissionV2Asked"] | components["schemas"]["EventPermissionV2Replied"] | components["schemas"]["EventPluginAdded"] | components["schemas"]["EventProjectDirectoriesUpdated"] | components["schemas"]["EventFileWatcherUpdated"] | components["schemas"]["EventPtyCreated"] | components["schemas"]["EventPtyUpdated"] | components["schemas"]["EventPtyExited"] | components["schemas"]["EventPtyDeleted"] | components["schemas"]["EventQuestionV2Asked"] | components["schemas"]["EventQuestionV2Replied"] | components["schemas"]["EventQuestionV2Rejected"] | components["schemas"]["EventTodoUpdated"] | components["schemas"]["EventLspUpdated"] | components["schemas"]["EventPermissionAsked"] | components["schemas"]["EventPermissionReplied"] | components["schemas"]["Event.tui.prompt.append"] | components["schemas"]["Event.tui.command.execute"] | components["schemas"]["Event.tui.toast.show"] | components["schemas"]["Event.tui.session.select"] | components["schemas"]["EventMcpToolsChanged"] | components["schemas"]["EventMcpBrowserOpenFailed"] | components["schemas"]["EventCommandExecuted"] | components["schemas"]["EventProjectUpdated"] | components["schemas"]["EventSessionStatus"] | components["schemas"]["EventSessionIdle"] | components["schemas"]["EventQuestionAsked"] | components["schemas"]["EventQuestionReplied"] | components["schemas"]["EventQuestionRejected"] | components["schemas"]["EventSessionCompacted"] | components["schemas"]["EventVcsBranchUpdated"] | components["schemas"]["EventWorkspaceReady"] | components["schemas"]["EventWorkspaceFailed"] | components["schemas"]["EventWorkspaceStatus"] | components["schemas"]["EventWorktreeReady"] | components["schemas"]["EventWorktreeFailed"] | components["schemas"]["EventServerConnected"] | components["schemas"]["EventGlobalDisposed"] | components["schemas"]["EventServerInstanceDisposed"];
         QuestionReplied: {
             sessionID: string;
             requestID: string;
@@ -2737,6 +3367,13 @@ export interface components {
             message: string;
             kind?: string;
             field?: string;
+        };
+        MoveSessionError: {
+            /** @enum {string} */
+            name: "MoveSessionError";
+            data: {
+                message: string;
+            };
         };
         SnapshotFileDiff: {
             file?: string;
@@ -2885,6 +3522,13 @@ export interface components {
                 responseBody?: string;
             };
         };
+        ContentFilterError: {
+            /** @enum {string} */
+            name: "ContentFilterError";
+            data: {
+                message: string;
+            };
+        };
         APIError: {
             /** @enum {string} */
             name: "APIError";
@@ -2910,7 +3554,7 @@ export interface components {
                 created: number;
                 completed?: number;
             };
-            error?: components["schemas"]["ProviderAuthError"] | components["schemas"]["UnknownError"] | components["schemas"]["MessageOutputLengthError"] | components["schemas"]["MessageAbortedError"] | components["schemas"]["StructuredOutputError"] | components["schemas"]["ContextOverflowError"] | components["schemas"]["APIError"];
+            error?: components["schemas"]["ProviderAuthError"] | components["schemas"]["UnknownError"] | components["schemas"]["MessageOutputLengthError"] | components["schemas"]["MessageAbortedError"] | components["schemas"]["StructuredOutputError"] | components["schemas"]["ContextOverflowError"] | components["schemas"]["ContentFilterError"] | components["schemas"]["APIError"];
             parentID: string;
             modelID: string;
             providerID: string;
@@ -3167,7 +3811,6 @@ export interface components {
             text: string;
             files?: components["schemas"]["PromptFileAttachment"][];
             agents?: components["schemas"]["PromptAgentAttachment"][];
-            references?: components["schemas"]["PromptReferenceAttachment"][];
         };
         Pty: {
             id: string;
@@ -3178,6 +3821,7 @@ export interface components {
             /** @enum {string} */
             status: "running" | "exited";
             pid: number;
+            exitCode?: number;
         };
         Todo: {
             /** @description Brief description of the task */
@@ -3186,6 +3830,27 @@ export interface components {
             status: string;
             /** @description Priority level of the task: high, medium, low */
             priority: string;
+        };
+        SessionStatus: {
+            /** @enum {string} */
+            type: "idle";
+        } | {
+            /** @enum {string} */
+            type: "retry";
+            attempt: number;
+            message: string;
+            action?: {
+                reason: string;
+                provider: string;
+                title: string;
+                message: string;
+                label: string;
+                link?: string;
+            };
+            next: number;
+        } | {
+            /** @enum {string} */
+            type: "busy";
         };
         QuestionOption: {
             /** @description Display text (1-5 words, concise) */
@@ -3208,27 +3873,6 @@ export interface components {
             callID: string;
         };
         QuestionAnswer: string[];
-        SessionStatus: {
-            /** @enum {string} */
-            type: "idle";
-        } | {
-            /** @enum {string} */
-            type: "retry";
-            attempt: number;
-            message: string;
-            action?: {
-                reason: string;
-                provider: string;
-                title: string;
-                message: string;
-                label: string;
-                link?: string;
-            };
-            next: number;
-        } | {
-            /** @enum {string} */
-            type: "busy";
-        };
         GlobalEvent: {
             directory: string;
             project?: string;
@@ -3241,17 +3885,20 @@ export interface components {
             } | {
                 id: string;
                 /** @enum {string} */
-                type: "plugin.added";
+                type: "integration.updated";
+                properties: Record<string, never>;
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "integration.connection.updated";
                 properties: {
-                    id: string;
+                    integrationID: string;
                 };
             } | {
                 id: string;
                 /** @enum {string} */
-                type: "catalog.model.updated";
-                properties: {
-                    model: components["schemas"]["ModelV2Info"];
-                };
+                type: "catalog.updated";
+                properties: Record<string, never>;
             } | {
                 id: string;
                 /** @enum {string} */
@@ -3317,6 +3964,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     agent: string;
                 };
             } | {
@@ -3326,11 +3974,18 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
-                    model: {
-                        id: string;
-                        providerID: string;
-                        variant?: string;
-                    };
+                    messageID: string;
+                    model: components["schemas"]["ModelRef"];
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.next.moved";
+                properties: {
+                    timestamp: number;
+                    sessionID: string;
+                    location: components["schemas"]["LocationRef"];
+                    subdirectory?: string;
                 };
             } | {
                 id: string;
@@ -3339,9 +3994,32 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     prompt: components["schemas"]["Prompt"];
                     /** @enum {string} */
                     delivery: "steer" | "queue";
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.next.prompt.admitted";
+                properties: {
+                    timestamp: number;
+                    sessionID: string;
+                    messageID: string;
+                    prompt: components["schemas"]["Prompt"];
+                    /** @enum {string} */
+                    delivery: "steer" | "queue";
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.next.context.updated";
+                properties: {
+                    timestamp: number;
+                    sessionID: string;
+                    messageID: string;
+                    text: string;
                 };
             } | {
                 id: string;
@@ -3350,6 +4028,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     text: string;
                 };
             } | {
@@ -3359,6 +4038,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     callID: string;
                     command: string;
                 };
@@ -3379,12 +4059,9 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     agent: string;
-                    model: {
-                        id: string;
-                        providerID: string;
-                        variant?: string;
-                    };
+                    model: components["schemas"]["ModelRef"];
                     snapshot?: string;
                 };
             } | {
@@ -3407,6 +4084,7 @@ export interface components {
                         };
                     };
                     snapshot?: string;
+                    files?: string[];
                 };
             } | {
                 id: string;
@@ -3425,6 +4103,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     textID: string;
                 };
             } | {
@@ -3434,6 +4113,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     textID: string;
                     delta: string;
                 };
@@ -3444,6 +4124,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     textID: string;
                     text: string;
                 };
@@ -3454,10 +4135,9 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     reasoningID: string;
-                    providerMetadata?: {
-                        [key: string]: Record<string, never>;
-                    };
+                    providerMetadata?: components["schemas"]["LLMProviderMetadata"];
                 };
             } | {
                 id: string;
@@ -3466,6 +4146,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     reasoningID: string;
                     delta: string;
                 };
@@ -3476,11 +4157,10 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     reasoningID: string;
                     text: string;
-                    providerMetadata?: {
-                        [key: string]: Record<string, never>;
-                    };
+                    providerMetadata?: components["schemas"]["LLMProviderMetadata"];
                 };
             } | {
                 id: string;
@@ -3528,9 +4208,7 @@ export interface components {
                     input: Record<string, never>;
                     provider: {
                         executed: boolean;
-                        metadata?: {
-                            [key: string]: Record<string, never>;
-                        };
+                        metadata?: components["schemas"]["LLMProviderMetadata"];
                     };
                 };
             } | {
@@ -3543,7 +4221,7 @@ export interface components {
                     assistantMessageID: string;
                     callID: string;
                     structured: Record<string, never>;
-                    content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+                    content: components["schemas"]["LLMToolContent"][];
                 };
             } | {
                 id: string;
@@ -3555,13 +4233,12 @@ export interface components {
                     assistantMessageID: string;
                     callID: string;
                     structured: Record<string, never>;
-                    content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+                    content: components["schemas"]["LLMToolContent"][];
+                    outputPaths?: string[];
                     result?: unknown;
                     provider: {
                         executed: boolean;
-                        metadata?: {
-                            [key: string]: Record<string, never>;
-                        };
+                        metadata?: components["schemas"]["LLMProviderMetadata"];
                     };
                 };
             } | {
@@ -3577,9 +4254,7 @@ export interface components {
                     result?: unknown;
                     provider: {
                         executed: boolean;
-                        metadata?: {
-                            [key: string]: Record<string, never>;
-                        };
+                        metadata?: components["schemas"]["LLMProviderMetadata"];
                     };
                 };
             } | {
@@ -3599,6 +4274,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     /** @enum {string} */
                     reason: "auto" | "manual";
                 };
@@ -3609,6 +4285,7 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     text: string;
                 };
             } | {
@@ -3618,8 +4295,37 @@ export interface components {
                 properties: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
+                    /** @enum {string} */
+                    reason: "auto" | "manual";
                     text: string;
-                    include?: string;
+                    recent: string;
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.next.revert.staged";
+                properties: {
+                    timestamp: number;
+                    sessionID: string;
+                    revert: components["schemas"]["RevertState"];
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.next.revert.cleared";
+                properties: {
+                    timestamp: number;
+                    sessionID: string;
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.next.revert.committed";
+                properties: {
+                    timestamp: number;
+                    sessionID: string;
+                    messageID: string;
                 };
             } | {
                 id: string;
@@ -3646,7 +4352,7 @@ export interface components {
                 type: "session.error";
                 properties: {
                     sessionID?: string;
-                    error?: components["schemas"]["ProviderAuthError"] | components["schemas"]["UnknownError"] | components["schemas"]["MessageOutputLengthError"] | components["schemas"]["MessageAbortedError"] | components["schemas"]["StructuredOutputError"] | components["schemas"]["ContextOverflowError"] | components["schemas"]["APIError"];
+                    error?: components["schemas"]["ProviderAuthError"] | components["schemas"]["UnknownError"] | components["schemas"]["MessageOutputLengthError"] | components["schemas"]["MessageAbortedError"] | components["schemas"]["StructuredOutputError"] | components["schemas"]["ContextOverflowError"] | components["schemas"]["ContentFilterError"] | components["schemas"]["APIError"];
                 };
             } | {
                 id: string;
@@ -3672,26 +4378,8 @@ export interface components {
             } | {
                 id: string;
                 /** @enum {string} */
-                type: "account.added";
-                properties: {
-                    account: components["schemas"]["AuthInfo"];
-                };
-            } | {
-                id: string;
-                /** @enum {string} */
-                type: "account.removed";
-                properties: {
-                    account: components["schemas"]["AuthInfo"];
-                };
-            } | {
-                id: string;
-                /** @enum {string} */
-                type: "account.switched";
-                properties: {
-                    serviceID: string;
-                    from?: string;
-                    to?: string;
-                };
+                type: "reference.updated";
+                properties: Record<string, never>;
             } | {
                 id: string;
                 /** @enum {string} */
@@ -3713,6 +4401,20 @@ export interface components {
                     sessionID: string;
                     requestID: string;
                     reply: components["schemas"]["PermissionV2Reply"];
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "plugin.added";
+                properties: {
+                    id: string;
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "project.directories.updated";
+                properties: {
+                    projectID: string;
                 };
             } | {
                 id: string;
@@ -3880,35 +4582,31 @@ export interface components {
             } | {
                 id: string;
                 /** @enum {string} */
-                type: "project.directories.updated";
-                properties: {
-                    projectID: string;
-                };
-            } | {
-                id: string;
-                /** @enum {string} */
                 type: "project.updated";
                 properties: {
                     id: string;
                     worktree: string;
-                    /** @enum {string} */
-                    vcs?: "git";
+                    vcs?: components["schemas"]["ProjectVcs"];
                     name?: string;
-                    icon?: {
-                        url?: string;
-                        override?: string;
-                        color?: string;
-                    };
-                    commands?: {
-                        /** @description Startup script to run when creating a new workspace (worktree) */
-                        start?: string;
-                    };
-                    time: {
-                        created: number;
-                        updated: number;
-                        initialized?: number;
-                    };
+                    icon?: components["schemas"]["ProjectIcon"];
+                    commands?: components["schemas"]["ProjectCommands"];
+                    time: components["schemas"]["ProjectTime"];
                     sandboxes: string[];
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.status";
+                properties: {
+                    sessionID: string;
+                    status: components["schemas"]["SessionStatus"];
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "session.idle";
+                properties: {
+                    sessionID: string;
                 };
             } | {
                 id: string;
@@ -3941,21 +4639,6 @@ export interface components {
             } | {
                 id: string;
                 /** @enum {string} */
-                type: "session.status";
-                properties: {
-                    sessionID: string;
-                    status: components["schemas"]["SessionStatus"];
-                };
-            } | {
-                id: string;
-                /** @enum {string} */
-                type: "session.idle";
-                properties: {
-                    sessionID: string;
-                };
-            } | {
-                id: string;
-                /** @enum {string} */
                 type: "session.compacted";
                 properties: {
                     sessionID: string;
@@ -3966,21 +4649,6 @@ export interface components {
                 type: "vcs.branch.updated";
                 properties: {
                     branch?: string;
-                };
-            } | {
-                id: string;
-                /** @enum {string} */
-                type: "worktree.ready";
-                properties: {
-                    name: string;
-                    branch?: string;
-                };
-            } | {
-                id: string;
-                /** @enum {string} */
-                type: "worktree.failed";
-                properties: {
-                    message: string;
                 };
             } | {
                 id: string;
@@ -4008,6 +4676,21 @@ export interface components {
             } | {
                 id: string;
                 /** @enum {string} */
+                type: "worktree.ready";
+                properties: {
+                    name: string;
+                    branch?: string;
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
+                type: "worktree.failed";
+                properties: {
+                    message: string;
+                };
+            } | {
+                id: string;
+                /** @enum {string} */
                 type: "server.connected";
                 properties: Record<string, never>;
             } | {
@@ -4015,7 +4698,7 @@ export interface components {
                 /** @enum {string} */
                 type: "global.disposed";
                 properties: Record<string, never>;
-            } | components["schemas"]["EventServerInstanceDisposed"] | components["schemas"]["SyncEventSessionCreated"] | components["schemas"]["SyncEventSessionUpdated"] | components["schemas"]["SyncEventSessionDeleted"] | components["schemas"]["SyncEventMessageUpdated"] | components["schemas"]["SyncEventMessageRemoved"] | components["schemas"]["SyncEventMessagePartUpdated"] | components["schemas"]["SyncEventMessagePartRemoved"] | components["schemas"]["SyncEventSessionNextAgentSwitched"] | components["schemas"]["SyncEventSessionNextModelSwitched"] | components["schemas"]["SyncEventSessionNextPrompted"] | components["schemas"]["SyncEventSessionNextSynthetic"] | components["schemas"]["SyncEventSessionNextShellStarted"] | components["schemas"]["SyncEventSessionNextShellEnded"] | components["schemas"]["SyncEventSessionNextStepStarted"] | components["schemas"]["SyncEventSessionNextStepEnded"] | components["schemas"]["SyncEventSessionNextStepFailed"] | components["schemas"]["SyncEventSessionNextTextStarted"] | components["schemas"]["SyncEventSessionNextTextEnded"] | components["schemas"]["SyncEventSessionNextReasoningStarted"] | components["schemas"]["SyncEventSessionNextReasoningEnded"] | components["schemas"]["SyncEventSessionNextToolInputStarted"] | components["schemas"]["SyncEventSessionNextToolInputEnded"] | components["schemas"]["SyncEventSessionNextToolCalled"] | components["schemas"]["SyncEventSessionNextToolProgress"] | components["schemas"]["SyncEventSessionNextToolSuccess"] | components["schemas"]["SyncEventSessionNextToolFailed"] | components["schemas"]["SyncEventSessionNextRetried"] | components["schemas"]["SyncEventSessionNextCompactionStarted"] | components["schemas"]["SyncEventSessionNextCompactionDelta"] | components["schemas"]["SyncEventSessionNextCompactionEnded"];
+            } | components["schemas"]["EventServerInstanceDisposed"] | components["schemas"]["SyncEventSessionCreated"] | components["schemas"]["SyncEventSessionUpdated"] | components["schemas"]["SyncEventSessionDeleted"] | components["schemas"]["SyncEventMessageUpdated"] | components["schemas"]["SyncEventMessageRemoved"] | components["schemas"]["SyncEventMessagePartUpdated"] | components["schemas"]["SyncEventMessagePartRemoved"] | components["schemas"]["SyncEventSessionNextAgentSwitched"] | components["schemas"]["SyncEventSessionNextModelSwitched"] | components["schemas"]["SyncEventSessionNextMoved"] | components["schemas"]["SyncEventSessionNextPrompted"] | components["schemas"]["SyncEventSessionNextPromptAdmitted"] | components["schemas"]["SyncEventSessionNextContextUpdated"] | components["schemas"]["SyncEventSessionNextSynthetic"] | components["schemas"]["SyncEventSessionNextShellStarted"] | components["schemas"]["SyncEventSessionNextShellEnded"] | components["schemas"]["SyncEventSessionNextStepStarted"] | components["schemas"]["SyncEventSessionNextStepEnded"] | components["schemas"]["SyncEventSessionNextStepFailed"] | components["schemas"]["SyncEventSessionNextTextStarted"] | components["schemas"]["SyncEventSessionNextTextEnded"] | components["schemas"]["SyncEventSessionNextReasoningStarted"] | components["schemas"]["SyncEventSessionNextReasoningEnded"] | components["schemas"]["SyncEventSessionNextToolInputStarted"] | components["schemas"]["SyncEventSessionNextToolInputEnded"] | components["schemas"]["SyncEventSessionNextToolCalled"] | components["schemas"]["SyncEventSessionNextToolProgress"] | components["schemas"]["SyncEventSessionNextToolSuccess"] | components["schemas"]["SyncEventSessionNextToolFailed"] | components["schemas"]["SyncEventSessionNextRetried"] | components["schemas"]["SyncEventSessionNextCompactionStarted"] | components["schemas"]["SyncEventSessionNextCompactionEnded"] | components["schemas"]["SyncEventSessionNextRevertStaged"] | components["schemas"]["SyncEventSessionNextRevertCleared"] | components["schemas"]["SyncEventSessionNextRevertCommitted"];
         };
         /**
          * @description Log level
@@ -4029,17 +4712,6 @@ export interface components {
             mdns?: boolean;
             mdnsDomain?: string;
             cors?: string[];
-        };
-        ReferenceConfigEntry: string | {
-            /** @description Git repository URL, host/path reference, or GitHub owner/repo shorthand */
-            repository: string;
-            branch?: string;
-        } | {
-            /** @description Absolute path, ~/ path, or workspace-relative path to a local reference directory */
-            path: string;
-        };
-        ReferenceConfig: {
-            [key: string]: components["schemas"]["ReferenceConfigEntry"];
         };
         /** @enum {string} */
         PermissionActionConfig: "ask" | "allow" | "deny";
@@ -4104,9 +4776,10 @@ export interface components {
                 setCacheKey?: boolean;
                 /** @description Timeout in milliseconds for full requests to this provider. Set to false to disable timeout. */
                 timeout?: number | false;
-                /** @description Timeout in milliseconds to wait for response headers. Provider integrations may set defaults. Set to false to disable timeout. */
+                /** @description Timeout in milliseconds to wait for response headers (default: 300000). Set to false to disable timeout. */
                 headerTimeout?: number | false;
-                chunkTimeout?: number;
+                /** @description Timeout in milliseconds between streamed SSE chunks for this provider (default: 300000). If no chunk arrives within this window, the request is aborted. Set to false to disable timeout. */
+                chunkTimeout?: number | false;
             } & {
                 [key: string]: unknown;
             };
@@ -4120,9 +4793,8 @@ export interface components {
                     reasoning?: boolean;
                     temperature?: boolean;
                     tool_call?: boolean;
-                    interleaved?: true | {
-                        /** @enum {string} */
-                        field: "reasoning_content" | "reasoning_details";
+                    interleaved?: boolean | ("reasoning" | "reasoning_content" | "reasoning_text") | string | {
+                        field: ("reasoning" | "reasoning_content" | "reasoning_text") | string;
                     };
                     cost?: {
                         input: number;
@@ -4175,6 +4847,7 @@ export interface components {
             type: "local";
             /** @description Command and arguments to run the MCP server */
             command: string[];
+            cwd?: string;
             environment?: {
                 [key: string]: string;
             };
@@ -4237,7 +4910,12 @@ export interface components {
                 paths?: string[];
                 urls?: string[];
             };
-            reference?: components["schemas"]["ReferenceConfig"];
+            references?: {
+                [key: string]: string | components["schemas"]["ConfigV2ReferenceGit"] | components["schemas"]["ConfigV2ReferenceLocal"];
+            };
+            reference?: {
+                [key: string]: string | components["schemas"]["ConfigV2ReferenceGit"] | components["schemas"]["ConfigV2ReferenceLocal"];
+            };
             watcher?: {
                 ignore?: string[];
             };
@@ -4256,6 +4934,7 @@ export interface components {
             model?: string;
             small_model?: string;
             default_agent?: string;
+            subagent_depth?: number;
             username?: string;
             mode?: {
                 build?: components["schemas"]["AgentConfig"];
@@ -4369,8 +5048,7 @@ export interface components {
                     pdf: boolean;
                 };
                 interleaved: boolean | {
-                    /** @enum {string} */
-                    field: "reasoning_content" | "reasoning_details";
+                    field: ("reasoning" | "reasoning_content" | "reasoning_text") | string;
                 };
             };
             cost: {
@@ -4429,6 +5107,9 @@ export interface components {
             models: {
                 [key: string]: components["schemas"]["Model"];
             };
+        };
+        ExperimentalCapabilities: {
+            backgroundSubagents: boolean;
         };
         ConsoleState: {
             consoleManagedProviders: string[];
@@ -4691,23 +5372,11 @@ export interface components {
         Project: {
             id: string;
             worktree: string;
-            /** @enum {string} */
-            vcs?: "git";
+            vcs?: components["schemas"]["ProjectVcs"];
             name?: string;
-            icon?: {
-                url?: string;
-                override?: string;
-                color?: string;
-            };
-            commands?: {
-                /** @description Startup script to run when creating a new workspace (worktree) */
-                start?: string;
-            };
-            time: {
-                created: number;
-                updated: number;
-                initialized?: number;
-            };
+            icon?: components["schemas"]["ProjectIcon"];
+            commands?: components["schemas"]["ProjectCommands"];
+            time: components["schemas"]["ProjectTime"];
             sandboxes: string[];
         };
         ProjectNotFoundError: {
@@ -4929,7 +5598,7 @@ export interface components {
             _tag: "UnauthorizedError";
             message: string;
         };
-        V2SessionsResponse: {
+        SessionsResponse: {
             data: components["schemas"]["SessionV2Info"][];
             cursor: {
                 previous?: string;
@@ -4941,11 +5610,9 @@ export interface components {
             _tag: "InvalidCursorError";
             message: string;
         };
-        ConflictError: {
+        SessionActive: {
             /** @enum {string} */
-            _tag: "ConflictError";
-            message: string;
-            resource?: string;
+            type: "running";
         };
         SessionNotFoundError: {
             /** @enum {string} */
@@ -4953,11 +5620,29 @@ export interface components {
             sessionID: string;
             message: string;
         };
+        PromptInput: {
+            text: string;
+            files?: components["schemas"]["PromptInputFileAttachment"][];
+            agents?: components["schemas"]["PromptAgentAttachment"][];
+        };
+        ConflictError: {
+            /** @enum {string} */
+            _tag: "ConflictError";
+            message: string;
+            resource?: string;
+        };
         ServiceUnavailableError: {
             /** @enum {string} */
             _tag: "ServiceUnavailableError";
             message: string;
             service?: string;
+        };
+        MessageNotFoundError: {
+            /** @enum {string} */
+            _tag: "MessageNotFoundError";
+            sessionID: string;
+            messageID: string;
+            message: string;
         };
         UnknownError1: {
             /** @enum {string} */
@@ -4965,7 +5650,13 @@ export interface components {
             message: string;
             ref?: string;
         };
-        V2SessionMessagesResponse: {
+        SessionDurableEvent: components["schemas"]["SessionNextAgentSwitched"] | components["schemas"]["SessionNextModelSwitched"] | components["schemas"]["SessionNextMoved"] | components["schemas"]["SessionNextPrompted"] | components["schemas"]["SessionNextPromptAdmitted"] | components["schemas"]["SessionNextContextUpdated"] | components["schemas"]["SessionNextSynthetic"] | components["schemas"]["SessionNextShellStarted"] | components["schemas"]["SessionNextShellEnded"] | components["schemas"]["SessionNextStepStarted"] | components["schemas"]["SessionNextStepEnded"] | components["schemas"]["SessionNextStepFailed"] | components["schemas"]["SessionNextTextStarted"] | components["schemas"]["SessionNextTextEnded"] | components["schemas"]["SessionNextToolInputStarted"] | components["schemas"]["SessionNextToolInputEnded"] | components["schemas"]["SessionNextToolCalled"] | components["schemas"]["SessionNextToolProgress"] | components["schemas"]["SessionNextToolSuccess"] | components["schemas"]["SessionNextToolFailed"] | components["schemas"]["SessionNextReasoningStarted"] | components["schemas"]["SessionNextReasoningEnded"] | components["schemas"]["SessionNextRetried"] | components["schemas"]["SessionNextCompactionStarted"] | components["schemas"]["SessionNextCompactionEnded"] | components["schemas"]["SessionNextRevertStaged"] | components["schemas"]["SessionNextRevertCleared"] | components["schemas"]["SessionNextRevertCommitted"];
+        SessionHistory: {
+            data: components["schemas"]["SessionDurableEvent"][];
+            hasMore: boolean;
+        };
+        SessionDurableEventStream: string;
+        SessionMessagesResponse: {
             data: components["schemas"]["SessionMessage"][];
             cursor: {
                 previous?: string;
@@ -4977,6 +5668,79 @@ export interface components {
             _tag: "ProviderNotFoundError";
             providerID: string;
             message: string;
+        };
+        OutputFormat1: {
+            /** @enum {string} */
+            type: "text";
+        } | {
+            /** @enum {string} */
+            type: "json_schema";
+            schema: components["schemas"]["JSONSchema"];
+            retryCount?: number;
+        };
+        "session.status": {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.status";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                status: components["schemas"]["SessionStatus"];
+            };
+        };
+        "question.replied": {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "question.replied";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                requestID: string;
+                answers: components["schemas"]["QuestionAnswer"][];
+            };
+        };
+        "question.rejected": {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "question.rejected";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                requestID: string;
+            };
+        };
+        V2Event: components["schemas"]["Models-devRefreshed"] | components["schemas"]["IntegrationUpdated"] | components["schemas"]["IntegrationConnectionUpdated"] | components["schemas"]["CatalogUpdated"] | components["schemas"]["SessionCreated"] | components["schemas"]["SessionUpdated"] | components["schemas"]["SessionDeleted"] | components["schemas"]["MessageUpdated"] | components["schemas"]["MessageRemoved"] | components["schemas"]["MessagePartUpdated"] | components["schemas"]["MessagePartRemoved"] | components["schemas"]["SessionNextAgentSwitched"] | components["schemas"]["SessionNextModelSwitched"] | components["schemas"]["SessionNextMoved"] | components["schemas"]["SessionNextPrompted"] | components["schemas"]["SessionNextPromptAdmitted"] | components["schemas"]["SessionNextContextUpdated"] | components["schemas"]["SessionNextSynthetic"] | components["schemas"]["SessionNextShellStarted"] | components["schemas"]["SessionNextShellEnded"] | components["schemas"]["SessionNextStepStarted"] | components["schemas"]["SessionNextStepEnded"] | components["schemas"]["SessionNextStepFailed"] | components["schemas"]["SessionNextTextStarted"] | components["schemas"]["SessionNextTextDelta"] | components["schemas"]["SessionNextTextEnded"] | components["schemas"]["SessionNextReasoningStarted"] | components["schemas"]["SessionNextReasoningDelta"] | components["schemas"]["SessionNextReasoningEnded"] | components["schemas"]["SessionNextToolInputStarted"] | components["schemas"]["SessionNextToolInputDelta"] | components["schemas"]["SessionNextToolInputEnded"] | components["schemas"]["SessionNextToolCalled"] | components["schemas"]["SessionNextToolProgress"] | components["schemas"]["SessionNextToolSuccess"] | components["schemas"]["SessionNextToolFailed"] | components["schemas"]["SessionNextRetried"] | components["schemas"]["SessionNextCompactionStarted"] | components["schemas"]["SessionNextCompactionDelta"] | components["schemas"]["SessionNextCompactionEnded"] | components["schemas"]["SessionNextRevertStaged"] | components["schemas"]["SessionNextRevertCleared"] | components["schemas"]["SessionNextRevertCommitted"] | components["schemas"]["MessagePartDelta"] | components["schemas"]["SessionDiff"] | components["schemas"]["SessionError"] | components["schemas"]["InstallationUpdated"] | components["schemas"]["InstallationUpdate-available"] | components["schemas"]["FileEdited"] | components["schemas"]["ReferenceUpdated"] | components["schemas"]["PermissionV2Asked"] | components["schemas"]["PermissionV2Replied"] | components["schemas"]["PluginAdded"] | components["schemas"]["ProjectDirectoriesUpdated"] | components["schemas"]["FileWatcherUpdated"] | components["schemas"]["PtyCreated"] | components["schemas"]["PtyUpdated"] | components["schemas"]["PtyExited"] | components["schemas"]["PtyDeleted"] | components["schemas"]["QuestionV2Asked"] | components["schemas"]["QuestionV2Replied"] | components["schemas"]["QuestionV2Rejected"] | components["schemas"]["TodoUpdated"] | components["schemas"]["LspUpdated"] | components["schemas"]["PermissionAsked"] | components["schemas"]["PermissionReplied"] | components["schemas"]["TuiPromptAppend"] | components["schemas"]["TuiCommandExecute"] | components["schemas"]["TuiToastShow"] | components["schemas"]["TuiSessionSelect"] | components["schemas"]["McpToolsChanged"] | components["schemas"]["McpBrowserOpenFailed"] | components["schemas"]["CommandExecuted"] | components["schemas"]["ProjectUpdated"] | components["schemas"]["session.status"] | components["schemas"]["SessionIdle"] | components["schemas"]["QuestionAsked"] | components["schemas"]["question.replied"] | components["schemas"]["question.rejected"] | components["schemas"]["SessionCompacted"] | components["schemas"]["VcsBranchUpdated"] | components["schemas"]["WorkspaceReady"] | components["schemas"]["WorkspaceFailed"] | components["schemas"]["WorkspaceStatus"] | components["schemas"]["WorktreeReady"] | components["schemas"]["WorktreeFailed"] | components["schemas"]["ServerConnected"] | components["schemas"]["GlobalDisposed"];
+        V2EventStream: string;
+        ForbiddenError: {
+            /** @enum {string} */
+            _tag: "ForbiddenError";
+            message: string;
+        };
+        ProjectCopyError: {
+            /** @enum {string} */
+            name: "ProjectCopyError";
+            data: {
+                message: string;
+                forceRequired?: boolean;
+            };
         };
         effect_HttpApiError_Forbidden: {
             /** @enum {string} */
@@ -5019,68 +5783,27 @@ export interface components {
                 sessionID: string;
             };
         };
-        ModelV2Info: {
+        CredentialValue: components["schemas"]["CredentialOAuth"] | components["schemas"]["CredentialKey"];
+        IntegrationInputs: {
+            [key: string]: string;
+        };
+        IntegrationMethod: components["schemas"]["IntegrationOAuthMethod"] | components["schemas"]["IntegrationKeyMethod"] | components["schemas"]["IntegrationEnvMethod"];
+        IntegrationRef: {
+            id: string;
+            name: string;
+        };
+        SkillV2Source: components["schemas"]["SkillV2DirectorySource"] | components["schemas"]["SkillV2UrlSource"] | components["schemas"]["SkillV2EmbeddedSource"];
+        MoveSessionDestination: {
+            directory: string;
+        };
+        ModelRef: {
             id: string;
             providerID: string;
-            family?: string;
-            name: string;
-            api: {
-                id: string;
-                /** @enum {string} */
-                type: "aisdk";
-                package: string;
-                url?: string;
-                settings?: Record<string, never>;
-            } | {
-                id: string;
-                /** @enum {string} */
-                type: "native";
-                url?: string;
-                settings: Record<string, never>;
-            };
-            capabilities: {
-                tools: boolean;
-                input: string[];
-                output: string[];
-            };
-            request: {
-                headers: {
-                    [key: string]: string;
-                };
-                body: Record<string, never>;
-                variant?: string;
-            };
-            variants: {
-                id: string;
-                headers: {
-                    [key: string]: string;
-                };
-                body: Record<string, never>;
-            }[];
-            time: {
-                released: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
-            };
-            cost: {
-                tier?: {
-                    /** @enum {string} */
-                    type: "context";
-                    size: number;
-                };
-                input: number;
-                output: number;
-                cache: {
-                    read: number;
-                    write: number;
-                };
-            }[];
-            /** @enum {string} */
-            status: "alpha" | "beta" | "deprecated" | "active";
-            enabled: boolean;
-            limit: {
-                context: number;
-                input?: number;
-                output: number;
-            };
+            variant?: string;
+        };
+        LocationRef: {
+            directory: string;
+            workspaceID?: string;
         };
         PromptSource: {
             start: number;
@@ -5098,22 +5821,13 @@ export interface components {
             name: string;
             source?: components["schemas"]["PromptSource"];
         };
-        PromptReferenceAttachment: {
-            name: string;
-            /** @enum {string} */
-            kind: "local" | "git" | "invalid";
-            uri?: string;
-            repository?: string;
-            branch?: string;
-            target?: string;
-            targetUri?: string;
-            problem?: string;
-            source?: components["schemas"]["PromptSource"];
-        };
         SessionErrorUnknown: {
             /** @enum {string} */
             type: "unknown";
             message: string;
+        };
+        LLMProviderMetadata: {
+            [key: string]: Record<string, never>;
         };
         ToolTextContent: {
             /** @enum {string} */
@@ -5123,22 +5837,11 @@ export interface components {
         ToolFileContent: {
             /** @enum {string} */
             type: "file";
-            source: {
-                /** @enum {string} */
-                type: "data";
-                data: string;
-            } | {
-                /** @enum {string} */
-                type: "url";
-                url: string;
-            } | {
-                /** @enum {string} */
-                type: "file";
-                uri: string;
-            };
+            uri: string;
             mime: string;
             name?: string;
         };
+        LLMToolContent: components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"];
         SessionNextRetry_error: {
             message: string;
             statusCode?: number;
@@ -5151,27 +5854,20 @@ export interface components {
                 [key: string]: string;
             };
         };
-        AuthOAuthCredential: {
+        FileDiff: {
+            path: string;
             /** @enum {string} */
-            type: "oauth";
-            refresh: string;
-            access: string;
-            expires: number;
+            status: "added" | "modified" | "deleted";
+            additions: number;
+            deletions: number;
+            patch: string;
         };
-        AuthApiKeyCredential: {
-            /** @enum {string} */
-            type: "api";
-            key: string;
-            metadata?: {
-                [key: string]: string;
-            };
-        };
-        AuthCredential: components["schemas"]["AuthOAuthCredential"] | components["schemas"]["AuthApiKeyCredential"];
-        AuthInfo: {
-            id: string;
-            serviceID: string;
-            description: string;
-            credential: components["schemas"]["AuthCredential"];
+        RevertState: {
+            messageID: string;
+            partID?: string;
+            snapshot?: string;
+            diff?: string;
+            files?: components["schemas"]["FileDiff"][];
         };
         PermissionV2Source: {
             /** @enum {string} */
@@ -5202,6 +5898,22 @@ export interface components {
             callID: string;
         };
         QuestionV2Answer: string[];
+        /** @enum {string} */
+        ProjectVcs: "git";
+        ProjectIcon: {
+            url?: string;
+            override?: string;
+            color?: string;
+        };
+        ProjectCommands: {
+            /** @description Startup script to run when creating a new workspace (worktree) */
+            start?: string;
+        };
+        ProjectTime: {
+            created: number;
+            updated: number;
+            initialized?: number;
+        };
         EventServerInstanceDisposed: {
             id: string;
             /** @enum {string} */
@@ -5337,6 +6049,7 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     agent: string;
                 };
             };
@@ -5354,11 +6067,26 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
-                    model: {
-                        id: string;
-                        providerID: string;
-                        variant?: string;
-                    };
+                    messageID: string;
+                    model: components["schemas"]["ModelRef"];
+                };
+            };
+        };
+        SyncEventSessionNextMoved: {
+            /** @enum {string} */
+            type: "sync";
+            id: string;
+            syncEvent: {
+                /** @enum {string} */
+                type: "session.next.moved.1";
+                id: string;
+                seq: number;
+                aggregateID: string;
+                data: {
+                    timestamp: number;
+                    sessionID: string;
+                    location: components["schemas"]["LocationRef"];
+                    subdirectory?: string;
                 };
             };
         };
@@ -5375,9 +6103,48 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     prompt: components["schemas"]["Prompt"];
                     /** @enum {string} */
                     delivery: "steer" | "queue";
+                };
+            };
+        };
+        SyncEventSessionNextPromptAdmitted: {
+            /** @enum {string} */
+            type: "sync";
+            id: string;
+            syncEvent: {
+                /** @enum {string} */
+                type: "session.next.prompt.admitted.1";
+                id: string;
+                seq: number;
+                aggregateID: string;
+                data: {
+                    timestamp: number;
+                    sessionID: string;
+                    messageID: string;
+                    prompt: components["schemas"]["Prompt"];
+                    /** @enum {string} */
+                    delivery: "steer" | "queue";
+                };
+            };
+        };
+        SyncEventSessionNextContextUpdated: {
+            /** @enum {string} */
+            type: "sync";
+            id: string;
+            syncEvent: {
+                /** @enum {string} */
+                type: "session.next.context.updated.1";
+                id: string;
+                seq: number;
+                aggregateID: string;
+                data: {
+                    timestamp: number;
+                    sessionID: string;
+                    messageID: string;
+                    text: string;
                 };
             };
         };
@@ -5394,6 +6161,7 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     text: string;
                 };
             };
@@ -5411,6 +6179,7 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     callID: string;
                     command: string;
                 };
@@ -5447,12 +6216,9 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     agent: string;
-                    model: {
-                        id: string;
-                        providerID: string;
-                        variant?: string;
-                    };
+                    model: components["schemas"]["ModelRef"];
                     snapshot?: string;
                 };
             };
@@ -5483,6 +6249,7 @@ export interface components {
                         };
                     };
                     snapshot?: string;
+                    files?: string[];
                 };
             };
         };
@@ -5517,6 +6284,7 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     textID: string;
                 };
             };
@@ -5534,6 +6302,7 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     textID: string;
                     text: string;
                 };
@@ -5552,10 +6321,9 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     reasoningID: string;
-                    providerMetadata?: {
-                        [key: string]: Record<string, never>;
-                    };
+                    providerMetadata?: components["schemas"]["LLMProviderMetadata"];
                 };
             };
         };
@@ -5572,11 +6340,10 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    assistantMessageID: string;
                     reasoningID: string;
                     text: string;
-                    providerMetadata?: {
-                        [key: string]: Record<string, never>;
-                    };
+                    providerMetadata?: components["schemas"]["LLMProviderMetadata"];
                 };
             };
         };
@@ -5637,9 +6404,7 @@ export interface components {
                     input: Record<string, never>;
                     provider: {
                         executed: boolean;
-                        metadata?: {
-                            [key: string]: Record<string, never>;
-                        };
+                        metadata?: components["schemas"]["LLMProviderMetadata"];
                     };
                 };
             };
@@ -5660,7 +6425,7 @@ export interface components {
                     assistantMessageID: string;
                     callID: string;
                     structured: Record<string, never>;
-                    content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+                    content: components["schemas"]["LLMToolContent"][];
                 };
             };
         };
@@ -5680,13 +6445,12 @@ export interface components {
                     assistantMessageID: string;
                     callID: string;
                     structured: Record<string, never>;
-                    content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+                    content: components["schemas"]["LLMToolContent"][];
+                    outputPaths?: string[];
                     result?: unknown;
                     provider: {
                         executed: boolean;
-                        metadata?: {
-                            [key: string]: Record<string, never>;
-                        };
+                        metadata?: components["schemas"]["LLMProviderMetadata"];
                     };
                 };
             };
@@ -5710,9 +6474,7 @@ export interface components {
                     result?: unknown;
                     provider: {
                         executed: boolean;
-                        metadata?: {
-                            [key: string]: Record<string, never>;
-                        };
+                        metadata?: components["schemas"]["LLMProviderMetadata"];
                     };
                 };
             };
@@ -5748,25 +6510,9 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
                     /** @enum {string} */
                     reason: "auto" | "manual";
-                };
-            };
-        };
-        SyncEventSessionNextCompactionDelta: {
-            /** @enum {string} */
-            type: "sync";
-            id: string;
-            syncEvent: {
-                /** @enum {string} */
-                type: "session.next.compaction.delta.1";
-                id: string;
-                seq: number;
-                aggregateID: string;
-                data: {
-                    timestamp: number;
-                    sessionID: string;
-                    text: string;
                 };
             };
         };
@@ -5783,10 +6529,74 @@ export interface components {
                 data: {
                     timestamp: number;
                     sessionID: string;
+                    messageID: string;
+                    /** @enum {string} */
+                    reason: "auto" | "manual";
                     text: string;
-                    include?: string;
+                    recent: string;
                 };
             };
+        };
+        SyncEventSessionNextRevertStaged: {
+            /** @enum {string} */
+            type: "sync";
+            id: string;
+            syncEvent: {
+                /** @enum {string} */
+                type: "session.next.revert.staged.1";
+                id: string;
+                seq: number;
+                aggregateID: string;
+                data: {
+                    timestamp: number;
+                    sessionID: string;
+                    revert: components["schemas"]["RevertState"];
+                };
+            };
+        };
+        SyncEventSessionNextRevertCleared: {
+            /** @enum {string} */
+            type: "sync";
+            id: string;
+            syncEvent: {
+                /** @enum {string} */
+                type: "session.next.revert.cleared.1";
+                id: string;
+                seq: number;
+                aggregateID: string;
+                data: {
+                    timestamp: number;
+                    sessionID: string;
+                };
+            };
+        };
+        SyncEventSessionNextRevertCommitted: {
+            /** @enum {string} */
+            type: "sync";
+            id: string;
+            syncEvent: {
+                /** @enum {string} */
+                type: "session.next.revert.committed.1";
+                id: string;
+                seq: number;
+                aggregateID: string;
+                data: {
+                    timestamp: number;
+                    sessionID: string;
+                    messageID: string;
+                };
+            };
+        };
+        ConfigV2ReferenceGit: {
+            repository: string;
+            branch?: string;
+            description?: string;
+            hidden?: boolean;
+        };
+        ConfigV2ReferenceLocal: {
+            path: string;
+            description?: string;
+            hidden?: boolean;
         };
         /** @enum {string} */
         PolicyEffect: "allow" | "deny";
@@ -5796,9 +6606,18 @@ export interface components {
             effect: components["schemas"]["PolicyEffect"];
             resource: string;
         };
-        ProjectDirectories: string[];
-        ProjectCopyCopy: {
+        ProjectDirectories: {
             directory: string;
+            strategy?: string;
+        }[];
+        PtyTicketConnectToken: {
+            ticket: string;
+            expires_in: number;
+        };
+        WorkspaceEventConnectionStatus: {
+            workspaceID: string;
+            /** @enum {string} */
+            status: "connected" | "connecting" | "disconnected" | "error";
         };
         LocationInfo: {
             directory: string;
@@ -5808,6 +6627,13 @@ export interface components {
                 directory: string;
             };
         };
+        ProviderRequest: {
+            headers: {
+                [key: string]: string;
+            };
+            body: Record<string, never>;
+        };
+        AgentColor: string | ("primary" | "secondary" | "accent" | "success" | "warning" | "error" | "info");
         /** @enum {string} */
         PermissionV2Effect: "allow" | "deny" | "ask";
         PermissionV2Rule: {
@@ -5818,40 +6644,23 @@ export interface components {
         PermissionV2Ruleset: components["schemas"]["PermissionV2Rule"][];
         AgentV2Info: {
             id: string;
-            model?: {
-                id: string;
-                providerID: string;
-                variant?: string;
-            };
-            request: {
-                headers: {
-                    [key: string]: string;
-                };
-                body: Record<string, never>;
-            };
+            model?: components["schemas"]["ModelRef"];
+            request: components["schemas"]["ProviderRequest"];
             system?: string;
             description?: string;
             /** @enum {string} */
             mode: "subagent" | "primary" | "all";
             hidden: boolean;
-            color?: string | ("primary" | "secondary" | "accent" | "success" | "warning" | "error" | "info");
+            color?: components["schemas"]["AgentColor"];
             steps?: number;
             permissions: components["schemas"]["PermissionV2Ruleset"];
-        };
-        LocationRef: {
-            directory: string;
-            workspaceID?: string;
         };
         SessionV2Info: {
             id: string;
             parentID?: string;
             projectID: string;
             agent?: string;
-            model?: {
-                id: string;
-                providerID: string;
-                variant?: string;
-            };
+            model?: components["schemas"]["ModelRef"];
             cost: number;
             tokens: {
                 input: number;
@@ -5870,19 +6679,23 @@ export interface components {
             title: string;
             location: components["schemas"]["LocationRef"];
             subpath?: string;
+            revert?: components["schemas"]["RevertState"];
         };
-        SessionMessageUser: {
+        PromptInputFileAttachment: {
+            uri: string;
+            name?: string;
+            description?: string;
+            source?: components["schemas"]["PromptSource"];
+        };
+        SessionInputAdmitted: {
+            admittedSeq: number;
             id: string;
-            metadata?: Record<string, never>;
-            time: {
-                created: number;
-            };
-            text: string;
-            files?: components["schemas"]["PromptFileAttachment"][];
-            agents?: components["schemas"]["PromptAgentAttachment"][];
-            references?: components["schemas"]["PromptReferenceAttachment"][];
+            sessionID: string;
+            prompt: components["schemas"]["Prompt"];
             /** @enum {string} */
-            type: "user";
+            delivery: "steer" | "queue";
+            timeCreated: number;
+            promotedSeq?: number;
         };
         SessionMessageAgentSwitched: {
             id: string;
@@ -5902,11 +6715,19 @@ export interface components {
             };
             /** @enum {string} */
             type: "model-switched";
-            model: {
-                id: string;
-                providerID: string;
-                variant?: string;
+            model: components["schemas"]["ModelRef"];
+        };
+        SessionMessageUser: {
+            id: string;
+            metadata?: Record<string, never>;
+            time: {
+                created: number;
             };
+            text: string;
+            files?: components["schemas"]["PromptFileAttachment"][];
+            agents?: components["schemas"]["PromptAgentAttachment"][];
+            /** @enum {string} */
+            type: "user";
         };
         SessionMessageSynthetic: {
             id: string;
@@ -5918,6 +6739,16 @@ export interface components {
             text: string;
             /** @enum {string} */
             type: "synthetic";
+        };
+        SessionMessageSystem: {
+            id: string;
+            metadata?: Record<string, never>;
+            time: {
+                created: number;
+            };
+            /** @enum {string} */
+            type: "system";
+            text: string;
         };
         SessionMessageShell: {
             id: string;
@@ -5943,8 +6774,10 @@ export interface components {
             type: "reasoning";
             id: string;
             text: string;
-            providerMetadata?: {
-                [key: string]: Record<string, never>;
+            providerMetadata?: components["schemas"]["LLMProviderMetadata"];
+            time?: {
+                created: number;
+                completed?: number;
             };
         };
         SessionMessageToolStatePending: {
@@ -5957,14 +6790,15 @@ export interface components {
             status: "running";
             input: Record<string, never>;
             structured: Record<string, never>;
-            content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+            content: components["schemas"]["LLMToolContent"][];
         };
         SessionMessageToolStateCompleted: {
             /** @enum {string} */
             status: "completed";
             input: Record<string, never>;
             attachments?: components["schemas"]["PromptFileAttachment"][];
-            content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+            content: components["schemas"]["LLMToolContent"][];
+            outputPaths?: string[];
             structured: Record<string, never>;
             result?: unknown;
         };
@@ -5972,7 +6806,7 @@ export interface components {
             /** @enum {string} */
             status: "error";
             input: Record<string, never>;
-            content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+            content: components["schemas"]["LLMToolContent"][];
             structured: Record<string, never>;
             error: components["schemas"]["SessionErrorUnknown"];
             result?: unknown;
@@ -5984,12 +6818,8 @@ export interface components {
             name: string;
             provider?: {
                 executed: boolean;
-                metadata?: {
-                    [key: string]: Record<string, never>;
-                };
-                resultMetadata?: {
-                    [key: string]: Record<string, never>;
-                };
+                metadata?: components["schemas"]["LLMProviderMetadata"];
+                resultMetadata?: components["schemas"]["LLMProviderMetadata"];
             };
             state: components["schemas"]["SessionMessageToolStatePending"] | components["schemas"]["SessionMessageToolStateRunning"] | components["schemas"]["SessionMessageToolStateCompleted"] | components["schemas"]["SessionMessageToolStateError"];
             time: {
@@ -6009,15 +6839,12 @@ export interface components {
             /** @enum {string} */
             type: "assistant";
             agent: string;
-            model: {
-                id: string;
-                providerID: string;
-                variant?: string;
-            };
+            model: components["schemas"]["ModelRef"];
             content: (components["schemas"]["SessionMessageAssistantText"] | components["schemas"]["SessionMessageAssistantReasoning"] | components["schemas"]["SessionMessageAssistantTool"])[];
             snapshot?: {
                 start?: string;
                 end?: string;
+                files?: string[];
             };
             finish?: string;
             cost?: number;
@@ -6038,48 +6865,753 @@ export interface components {
             /** @enum {string} */
             reason: "auto" | "manual";
             summary: string;
-            include?: string;
+            recent: string;
             id: string;
             metadata?: Record<string, never>;
             time: {
                 created: number;
             };
         };
-        SessionMessage: components["schemas"]["SessionMessageAgentSwitched"] | components["schemas"]["SessionMessageModelSwitched"] | components["schemas"]["SessionMessageUser"] | components["schemas"]["SessionMessageSynthetic"] | components["schemas"]["SessionMessageShell"] | components["schemas"]["SessionMessageAssistant"] | components["schemas"]["SessionMessageCompaction"];
-        ProviderV2Info: {
+        SessionMessage: components["schemas"]["SessionMessageAgentSwitched"] | components["schemas"]["SessionMessageModelSwitched"] | components["schemas"]["SessionMessageUser"] | components["schemas"]["SessionMessageSynthetic"] | components["schemas"]["SessionMessageSystem"] | components["schemas"]["SessionMessageShell"] | components["schemas"]["SessionMessageAssistant"] | components["schemas"]["SessionMessageCompaction"];
+        SessionNextAgentSwitched: {
             id: string;
-            name: string;
-            enabled: false | {
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.agent.switched";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                agent: string;
+            };
+        };
+        SessionNextModelSwitched: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.model.switched";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                model: components["schemas"]["ModelRef"];
+            };
+        };
+        SessionNextMoved: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.moved";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                location: components["schemas"]["LocationRef"];
+                subdirectory?: string;
+            };
+        };
+        SessionNextPrompted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.prompted";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                prompt: components["schemas"]["Prompt"];
                 /** @enum {string} */
-                via: "env";
+                delivery: "steer" | "queue";
+            };
+        };
+        SessionNextPromptAdmitted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.prompt.admitted";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                prompt: components["schemas"]["Prompt"];
+                /** @enum {string} */
+                delivery: "steer" | "queue";
+            };
+        };
+        SessionNextContextUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.context.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                text: string;
+            };
+        };
+        SessionNextSynthetic: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.synthetic";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                text: string;
+            };
+        };
+        SessionNextShellStarted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.shell.started";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                callID: string;
+                command: string;
+            };
+        };
+        SessionNextShellEnded: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.shell.ended";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                callID: string;
+                output: string;
+            };
+        };
+        SessionNextStepStarted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.step.started";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                agent: string;
+                model: components["schemas"]["ModelRef"];
+                snapshot?: string;
+            };
+        };
+        SessionNextStepEnded: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.step.ended";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                finish: string;
+                cost: number;
+                tokens: {
+                    input: number;
+                    output: number;
+                    reasoning: number;
+                    cache: {
+                        read: number;
+                        write: number;
+                    };
+                };
+                snapshot?: string;
+                files?: string[];
+            };
+        };
+        SessionNextStepFailed: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.step.failed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                error: components["schemas"]["SessionErrorUnknown"];
+            };
+        };
+        SessionNextTextStarted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.text.started";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                textID: string;
+            };
+        };
+        SessionNextTextEnded: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.text.ended";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                textID: string;
+                text: string;
+            };
+        };
+        SessionNextToolInputStarted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.tool.input.started";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                callID: string;
                 name: string;
-            } | {
-                /** @enum {string} */
-                via: "account";
-                service: string;
-            } | {
-                /** @enum {string} */
-                via: "custom";
-                data: Record<string, never>;
             };
-            env: string[];
-            api: {
-                /** @enum {string} */
-                type: "aisdk";
-                package: string;
-                url?: string;
-                settings?: Record<string, never>;
-            } | {
-                /** @enum {string} */
-                type: "native";
-                url?: string;
-                settings: Record<string, never>;
+        };
+        SessionNextToolInputEnded: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.tool.input.ended";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
             };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                callID: string;
+                text: string;
+            };
+        };
+        SessionNextToolCalled: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.tool.called";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                callID: string;
+                tool: string;
+                input: Record<string, never>;
+                provider: {
+                    executed: boolean;
+                    metadata?: components["schemas"]["LLMProviderMetadata"];
+                };
+            };
+        };
+        SessionNextToolProgress: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.tool.progress";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                callID: string;
+                structured: Record<string, never>;
+                content: components["schemas"]["LLMToolContent"][];
+            };
+        };
+        SessionNextToolSuccess: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.tool.success";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                callID: string;
+                structured: Record<string, never>;
+                content: components["schemas"]["LLMToolContent"][];
+                outputPaths?: string[];
+                result?: unknown;
+                provider: {
+                    executed: boolean;
+                    metadata?: components["schemas"]["LLMProviderMetadata"];
+                };
+            };
+        };
+        SessionNextToolFailed: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.tool.failed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                callID: string;
+                error: components["schemas"]["SessionErrorUnknown"];
+                result?: unknown;
+                provider: {
+                    executed: boolean;
+                    metadata?: components["schemas"]["LLMProviderMetadata"];
+                };
+            };
+        };
+        SessionNextReasoningStarted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.reasoning.started";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                reasoningID: string;
+                providerMetadata?: components["schemas"]["LLMProviderMetadata"];
+            };
+        };
+        SessionNextReasoningEnded: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.reasoning.ended";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                reasoningID: string;
+                text: string;
+                providerMetadata?: components["schemas"]["LLMProviderMetadata"];
+            };
+        };
+        SessionNextRetried: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.retried";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                attempt: number;
+                error: components["schemas"]["SessionNextRetry_error"];
+            };
+        };
+        SessionNextCompactionStarted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.compaction.started";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                /** @enum {string} */
+                reason: "auto" | "manual";
+            };
+        };
+        SessionNextCompactionEnded: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.compaction.ended";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                /** @enum {string} */
+                reason: "auto" | "manual";
+                text: string;
+                recent: string;
+            };
+        };
+        SessionNextRevertStaged: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.revert.staged";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                revert: components["schemas"]["RevertState"];
+            };
+        };
+        SessionNextRevertCleared: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.revert.cleared";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+            };
+        };
+        SessionNextRevertCommitted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.revert.committed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+            };
+        };
+        ModelApi: {
+            id: string;
+            /** @enum {string} */
+            type: "aisdk";
+            package: string;
+            url?: string;
+            settings?: Record<string, never>;
+        } | {
+            id: string;
+            /** @enum {string} */
+            type: "native";
+            url?: string;
+            settings: Record<string, never>;
+        };
+        ModelCapabilities: {
+            tools: boolean;
+            input: string[];
+            output: string[];
+        };
+        ModelCost: {
+            tier?: {
+                /** @enum {string} */
+                type: "context";
+                size: number;
+            };
+            input: number;
+            output: number;
+            cache: {
+                read: number;
+                write: number;
+            };
+        };
+        ModelV2Info: {
+            id: string;
+            providerID: string;
+            family?: string;
+            name: string;
+            api: components["schemas"]["ModelApi"];
+            capabilities: components["schemas"]["ModelCapabilities"];
             request: {
                 headers: {
                     [key: string]: string;
                 };
                 body: Record<string, never>;
+                variant?: string;
+            };
+            variants: {
+                id: string;
+                headers: {
+                    [key: string]: string;
+                };
+                body: Record<string, never>;
+            }[];
+            time: {
+                released: number;
+            };
+            cost: components["schemas"]["ModelCost"][];
+            /** @enum {string} */
+            status: "alpha" | "beta" | "deprecated" | "active";
+            enabled: boolean;
+            limit: {
+                context: number;
+                input?: number;
+                output: number;
+            };
+        };
+        ProviderAISDK: {
+            /** @enum {string} */
+            type: "aisdk";
+            package: string;
+            url?: string;
+            settings?: Record<string, never>;
+        };
+        ProviderNative: {
+            /** @enum {string} */
+            type: "native";
+            url?: string;
+            settings: Record<string, never>;
+        };
+        ProviderApi: components["schemas"]["ProviderAISDK"] | components["schemas"]["ProviderNative"];
+        ProviderV2Info: {
+            id: string;
+            integrationID?: string;
+            name: string;
+            disabled?: boolean;
+            api: components["schemas"]["ProviderApi"];
+            request: components["schemas"]["ProviderRequest"];
+        };
+        IntegrationWhen: {
+            key: string;
+            /** @enum {string} */
+            op: "eq" | "neq";
+            value: string;
+        };
+        IntegrationTextPrompt: {
+            /** @enum {string} */
+            type: "text";
+            key: string;
+            message: string;
+            placeholder?: string;
+            when?: components["schemas"]["IntegrationWhen"];
+        };
+        IntegrationSelectPrompt: {
+            /** @enum {string} */
+            type: "select";
+            key: string;
+            message: string;
+            options: {
+                label: string;
+                value: string;
+                hint?: string;
+            }[];
+            when?: components["schemas"]["IntegrationWhen"];
+        };
+        IntegrationOAuthMethod: {
+            id: string;
+            /** @enum {string} */
+            type: "oauth";
+            label: string;
+            prompts?: (components["schemas"]["IntegrationTextPrompt"] | components["schemas"]["IntegrationSelectPrompt"])[];
+        };
+        IntegrationKeyMethod: {
+            /** @enum {string} */
+            type: "key";
+            label?: string;
+        };
+        IntegrationEnvMethod: {
+            /** @enum {string} */
+            type: "env";
+            names: string[];
+        };
+        ConnectionCredentialInfo: {
+            /** @enum {string} */
+            type: "credential";
+            id: string;
+            label: string;
+        };
+        ConnectionEnvInfo: {
+            /** @enum {string} */
+            type: "env";
+            name: string;
+        };
+        ConnectionInfo: components["schemas"]["ConnectionCredentialInfo"] | components["schemas"]["ConnectionEnvInfo"];
+        IntegrationInfo: {
+            id: string;
+            name: string;
+            methods: components["schemas"]["IntegrationMethod"][];
+            connections: components["schemas"]["ConnectionInfo"][];
+        };
+        IntegrationAttempt: {
+            attemptID: string;
+            url: string;
+            instructions: string;
+            /** @enum {string} */
+            mode: "auto" | "code";
+            time: {
+                created: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+                expires: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+            };
+        };
+        IntegrationAttemptStatus: {
+            /** @enum {string} */
+            status: "pending";
+            time: {
+                created: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+                expires: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+            };
+        } | {
+            /** @enum {string} */
+            status: "complete";
+            time: {
+                created: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+                expires: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+            };
+        } | {
+            /** @enum {string} */
+            status: "failed";
+            message: string;
+            time: {
+                created: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+                expires: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+            };
+        } | {
+            /** @enum {string} */
+            status: "expired";
+            time: {
+                created: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
+                expires: number | "NaN" | "Infinity" | "-Infinity" | ("Infinity" | "-Infinity" | "NaN");
             };
         };
         PermissionV2Request: {
@@ -6097,37 +7629,17 @@ export interface components {
             action: string;
             resource: string;
         };
-        FileSystemTextContent: {
-            /** @enum {string} */
-            type: "text";
-            content: string;
-            mime: string;
-        };
-        FileSystemBinaryContent: {
-            /** @enum {string} */
-            type: "binary";
-            content: string;
-            /** @enum {string} */
-            encoding: "base64";
-            mime: string;
-        };
         FileSystemEntry: {
             path: string;
-            uri: string;
             /** @enum {string} */
             type: "file" | "directory";
-            mime: string;
         };
         CommandV2Info: {
             name: string;
             template: string;
             description?: string;
             agent?: string;
-            model?: {
-                id: string;
-                providerID: string;
-                variant?: string;
-            };
+            model?: components["schemas"]["ModelRef"];
             subtask?: boolean;
         };
         SkillV2Info: {
@@ -6136,6 +7648,931 @@ export interface components {
             slash?: boolean;
             location: string;
             content: string;
+        };
+        "Models-devRefreshed": {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "models-dev.refreshed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: Record<string, never>;
+        };
+        IntegrationUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "integration.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: Record<string, never>;
+        };
+        IntegrationConnectionUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "integration.connection.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                integrationID: string;
+            };
+        };
+        CatalogUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "catalog.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: Record<string, never>;
+        };
+        SessionCreated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.created";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                info: components["schemas"]["Session"];
+            };
+        };
+        SessionUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                info: components["schemas"]["Session"];
+            };
+        };
+        SessionDeleted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.deleted";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                info: components["schemas"]["Session"];
+            };
+        };
+        MessageUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "message.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                info: components["schemas"]["Message"];
+            };
+        };
+        MessageRemoved: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "message.removed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                messageID: string;
+            };
+        };
+        MessagePartUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "message.part.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                part: components["schemas"]["Part"];
+                time: number;
+            };
+        };
+        MessagePartRemoved: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "message.part.removed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                messageID: string;
+                partID: string;
+            };
+        };
+        SessionNextTextDelta: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.text.delta";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                textID: string;
+                delta: string;
+            };
+        };
+        SessionNextReasoningDelta: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.reasoning.delta";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                reasoningID: string;
+                delta: string;
+            };
+        };
+        SessionNextToolInputDelta: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.tool.input.delta";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                assistantMessageID: string;
+                callID: string;
+                delta: string;
+            };
+        };
+        SessionNextCompactionDelta: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.next.compaction.delta";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                text: string;
+            };
+        };
+        MessagePartDelta: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "message.part.delta";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                messageID: string;
+                partID: string;
+                field: string;
+                delta: string;
+            };
+        };
+        SessionDiff: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.diff";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                diff: components["schemas"]["SnapshotFileDiff"][];
+            };
+        };
+        SessionError: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.error";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID?: string;
+                error?: components["schemas"]["ProviderAuthError"] | components["schemas"]["UnknownError"] | components["schemas"]["MessageOutputLengthError"] | components["schemas"]["MessageAbortedError"] | components["schemas"]["StructuredOutputError"] | components["schemas"]["ContextOverflowError"] | components["schemas"]["ContentFilterError"] | components["schemas"]["APIError"];
+            };
+        };
+        InstallationUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "installation.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                version: string;
+            };
+        };
+        "InstallationUpdate-available": {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "installation.update-available";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                version: string;
+            };
+        };
+        FileEdited: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "file.edited";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                file: string;
+            };
+        };
+        ReferenceUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "reference.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: Record<string, never>;
+        };
+        PermissionV2Asked: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "permission.v2.asked";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+                sessionID: string;
+                action: string;
+                resources: string[];
+                save?: string[];
+                metadata?: Record<string, never>;
+                source?: components["schemas"]["PermissionV2Source"];
+            };
+        };
+        PermissionV2Replied: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "permission.v2.replied";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                requestID: string;
+                reply: components["schemas"]["PermissionV2Reply"];
+            };
+        };
+        PluginAdded: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "plugin.added";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+            };
+        };
+        ProjectDirectoriesUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "project.directories.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                projectID: string;
+            };
+        };
+        FileWatcherUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "file.watcher.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                file: string;
+                /** @enum {string} */
+                event: "add" | "change" | "unlink";
+            };
+        };
+        PtyCreated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "pty.created";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                info: components["schemas"]["Pty"];
+            };
+        };
+        PtyUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "pty.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                info: components["schemas"]["Pty"];
+            };
+        };
+        PtyExited: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "pty.exited";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+                exitCode: number;
+            };
+        };
+        PtyDeleted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "pty.deleted";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+            };
+        };
+        QuestionV2Asked: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "question.v2.asked";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+                sessionID: string;
+                /** @description Questions to ask */
+                questions: components["schemas"]["QuestionV2Info"][];
+                tool?: components["schemas"]["QuestionV2Tool"];
+            };
+        };
+        QuestionV2Replied: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "question.v2.replied";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                requestID: string;
+                answers: components["schemas"]["QuestionV2Answer"][];
+            };
+        };
+        QuestionV2Rejected: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "question.v2.rejected";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                requestID: string;
+            };
+        };
+        TodoUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "todo.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                todos: components["schemas"]["Todo"][];
+            };
+        };
+        LspUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "lsp.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: Record<string, never>;
+        };
+        PermissionAsked: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "permission.asked";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+                sessionID: string;
+                permission: string;
+                patterns: string[];
+                metadata: Record<string, never>;
+                always: string[];
+                tool?: {
+                    messageID: string;
+                    callID: string;
+                };
+            };
+        };
+        PermissionReplied: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "permission.replied";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+                requestID: string;
+                /** @enum {string} */
+                reply: "once" | "always" | "reject";
+            };
+        };
+        TuiPromptAppend: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "tui.prompt.append";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                text: string;
+            };
+        };
+        TuiCommandExecute: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "tui.command.execute";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                command: ("session.list" | "session.new" | "session.share" | "session.interrupt" | "session.compact" | "session.page.up" | "session.page.down" | "session.line.up" | "session.line.down" | "session.half.page.up" | "session.half.page.down" | "session.first" | "session.last" | "prompt.clear" | "prompt.submit" | "agent.cycle") | string;
+            };
+        };
+        TuiToastShow: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "tui.toast.show";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                title?: string;
+                message: string;
+                /** @enum {string} */
+                variant: "info" | "success" | "warning" | "error";
+                duration?: number;
+            };
+        };
+        TuiSessionSelect: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "tui.session.select";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                /** @description Session ID to navigate to */
+                sessionID: string;
+            };
+        };
+        McpToolsChanged: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "mcp.tools.changed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                server: string;
+            };
+        };
+        McpBrowserOpenFailed: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "mcp.browser.open.failed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                mcpName: string;
+                url: string;
+            };
+        };
+        CommandExecuted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "command.executed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                name: string;
+                sessionID: string;
+                arguments: string;
+                messageID: string;
+            };
+        };
+        ProjectUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "project.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+                worktree: string;
+                vcs?: components["schemas"]["ProjectVcs"];
+                name?: string;
+                icon?: components["schemas"]["ProjectIcon"];
+                commands?: components["schemas"]["ProjectCommands"];
+                time: components["schemas"]["ProjectTime"];
+                sandboxes: string[];
+            };
+        };
+        SessionIdle: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.idle";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+            };
+        };
+        QuestionAsked: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "question.asked";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                id: string;
+                sessionID: string;
+                /** @description Questions to ask */
+                questions: components["schemas"]["QuestionInfo"][];
+                tool?: components["schemas"]["QuestionTool"];
+            };
+        };
+        SessionCompacted: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "session.compacted";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                sessionID: string;
+            };
+        };
+        VcsBranchUpdated: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "vcs.branch.updated";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                branch?: string;
+            };
+        };
+        WorkspaceReady: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "workspace.ready";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                name: string;
+            };
+        };
+        WorkspaceFailed: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "workspace.failed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                message: string;
+            };
+        };
+        WorkspaceStatus: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "workspace.status";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                workspaceID: string;
+                /** @enum {string} */
+                status: "connected" | "connecting" | "disconnected" | "error";
+            };
+        };
+        WorktreeReady: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "worktree.ready";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                name: string;
+                branch?: string;
+            };
+        };
+        WorktreeFailed: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "worktree.failed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: {
+                message: string;
+            };
+        };
+        ServerConnected: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "server.connected";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: Record<string, never>;
+        };
+        GlobalDisposed: {
+            id: string;
+            metadata?: Record<string, never>;
+            /** @enum {string} */
+            type: "global.disposed";
+            durable?: {
+                aggregateID: string;
+                seq: number;
+                version: number;
+            };
+            location?: components["schemas"]["LocationRef"];
+            data: Record<string, never>;
         };
         QuestionV2Request: {
             id: string;
@@ -6148,90 +8585,57 @@ export interface components {
             /** @description User answers in order of questions (each answer is an array of selected labels) */
             answers: components["schemas"]["QuestionV2Answer"][];
         };
+        ReferenceLocalSource: {
+            /** @enum {string} */
+            type: "local";
+            path: string;
+            description?: string;
+            hidden?: boolean;
+        };
+        ReferenceGitSource: {
+            /** @enum {string} */
+            type: "git";
+            repository: string;
+            branch?: string;
+            description?: string;
+            hidden?: boolean;
+        };
+        ReferenceSource: components["schemas"]["ReferenceLocalSource"] | components["schemas"]["ReferenceGitSource"];
+        ReferenceInfo: {
+            name: string;
+            path: string;
+            description?: string;
+            hidden?: boolean;
+            source: components["schemas"]["ReferenceSource"];
+        };
+        ProjectCopyCopy: {
+            directory: string;
+        };
         "EventModels-devRefreshed": {
             id: string;
             /** @enum {string} */
             type: "models-dev.refreshed";
             properties: Record<string, never>;
         };
-        EventPluginAdded: {
+        EventIntegrationUpdated: {
             id: string;
             /** @enum {string} */
-            type: "plugin.added";
+            type: "integration.updated";
+            properties: Record<string, never>;
+        };
+        EventIntegrationConnectionUpdated: {
+            id: string;
+            /** @enum {string} */
+            type: "integration.connection.updated";
             properties: {
-                id: string;
+                integrationID: string;
             };
         };
-        ModelV2Info1: {
-            id: string;
-            providerID: string;
-            family?: string;
-            name: string;
-            api: {
-                id: string;
-                /** @enum {string} */
-                type: "aisdk";
-                package: string;
-                url?: string;
-                settings?: Record<string, never>;
-            } | {
-                id: string;
-                /** @enum {string} */
-                type: "native";
-                url?: string;
-                settings: Record<string, never>;
-            };
-            capabilities: {
-                tools: boolean;
-                input: string[];
-                output: string[];
-            };
-            request: {
-                headers: {
-                    [key: string]: string;
-                };
-                body: Record<string, never>;
-                variant?: string;
-            };
-            variants: {
-                id: string;
-                headers: {
-                    [key: string]: string;
-                };
-                body: Record<string, never>;
-            }[];
-            time: {
-                released: number | "NaN" | "Infinity" | "-Infinity";
-            };
-            cost: {
-                tier?: {
-                    /** @enum {string} */
-                    type: "context";
-                    size: number;
-                };
-                input: number;
-                output: number;
-                cache: {
-                    read: number;
-                    write: number;
-                };
-            }[];
-            /** @enum {string} */
-            status: "alpha" | "beta" | "deprecated" | "active";
-            enabled: boolean;
-            limit: {
-                context: number;
-                input?: number;
-                output: number;
-            };
-        };
-        EventCatalogModelUpdated: {
+        EventCatalogUpdated: {
             id: string;
             /** @enum {string} */
-            type: "catalog.model.updated";
-            properties: {
-                model: components["schemas"]["ModelV2Info1"];
-            };
+            type: "catalog.updated";
+            properties: Record<string, never>;
         };
         EventSessionCreated: {
             id: string;
@@ -6305,6 +8709,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                messageID: string;
                 agent: string;
             };
         };
@@ -6315,11 +8720,19 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
-                model: {
-                    id: string;
-                    providerID: string;
-                    variant?: string;
-                };
+                messageID: string;
+                model: components["schemas"]["ModelRef"];
+            };
+        };
+        EventSessionNextMoved: {
+            id: string;
+            /** @enum {string} */
+            type: "session.next.moved";
+            properties: {
+                timestamp: number;
+                sessionID: string;
+                location: components["schemas"]["LocationRef"];
+                subdirectory?: string;
             };
         };
         EventSessionNextPrompted: {
@@ -6329,9 +8742,34 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                messageID: string;
                 prompt: components["schemas"]["Prompt"];
                 /** @enum {string} */
                 delivery: "steer" | "queue";
+            };
+        };
+        EventSessionNextPromptAdmitted: {
+            id: string;
+            /** @enum {string} */
+            type: "session.next.prompt.admitted";
+            properties: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                prompt: components["schemas"]["Prompt"];
+                /** @enum {string} */
+                delivery: "steer" | "queue";
+            };
+        };
+        EventSessionNextContextUpdated: {
+            id: string;
+            /** @enum {string} */
+            type: "session.next.context.updated";
+            properties: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
+                text: string;
             };
         };
         EventSessionNextSynthetic: {
@@ -6341,6 +8779,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                messageID: string;
                 text: string;
             };
         };
@@ -6351,6 +8790,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                messageID: string;
                 callID: string;
                 command: string;
             };
@@ -6373,12 +8813,9 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                assistantMessageID: string;
                 agent: string;
-                model: {
-                    id: string;
-                    providerID: string;
-                    variant?: string;
-                };
+                model: components["schemas"]["ModelRef"];
                 snapshot?: string;
             };
         };
@@ -6402,6 +8839,7 @@ export interface components {
                     };
                 };
                 snapshot?: string;
+                files?: string[];
             };
         };
         EventSessionNextStepFailed: {
@@ -6422,6 +8860,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                assistantMessageID: string;
                 textID: string;
             };
         };
@@ -6432,6 +8871,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                assistantMessageID: string;
                 textID: string;
                 delta: string;
             };
@@ -6443,6 +8883,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                assistantMessageID: string;
                 textID: string;
                 text: string;
             };
@@ -6454,10 +8895,9 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                assistantMessageID: string;
                 reasoningID: string;
-                providerMetadata?: {
-                    [key: string]: Record<string, never>;
-                };
+                providerMetadata?: components["schemas"]["LLMProviderMetadata"];
             };
         };
         EventSessionNextReasoningDelta: {
@@ -6467,6 +8907,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                assistantMessageID: string;
                 reasoningID: string;
                 delta: string;
             };
@@ -6478,11 +8919,10 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                assistantMessageID: string;
                 reasoningID: string;
                 text: string;
-                providerMetadata?: {
-                    [key: string]: Record<string, never>;
-                };
+                providerMetadata?: components["schemas"]["LLMProviderMetadata"];
             };
         };
         EventSessionNextToolInputStarted: {
@@ -6534,9 +8974,7 @@ export interface components {
                 input: Record<string, never>;
                 provider: {
                     executed: boolean;
-                    metadata?: {
-                        [key: string]: Record<string, never>;
-                    };
+                    metadata?: components["schemas"]["LLMProviderMetadata"];
                 };
             };
         };
@@ -6550,7 +8988,7 @@ export interface components {
                 assistantMessageID: string;
                 callID: string;
                 structured: Record<string, never>;
-                content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+                content: components["schemas"]["LLMToolContent"][];
             };
         };
         EventSessionNextToolSuccess: {
@@ -6563,13 +9001,12 @@ export interface components {
                 assistantMessageID: string;
                 callID: string;
                 structured: Record<string, never>;
-                content: (components["schemas"]["ToolTextContent"] | components["schemas"]["ToolFileContent"])[];
+                content: components["schemas"]["LLMToolContent"][];
+                outputPaths?: string[];
                 result?: unknown;
                 provider: {
                     executed: boolean;
-                    metadata?: {
-                        [key: string]: Record<string, never>;
-                    };
+                    metadata?: components["schemas"]["LLMProviderMetadata"];
                 };
             };
         };
@@ -6586,9 +9023,7 @@ export interface components {
                 result?: unknown;
                 provider: {
                     executed: boolean;
-                    metadata?: {
-                        [key: string]: Record<string, never>;
-                    };
+                    metadata?: components["schemas"]["LLMProviderMetadata"];
                 };
             };
         };
@@ -6610,6 +9045,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                messageID: string;
                 /** @enum {string} */
                 reason: "auto" | "manual";
             };
@@ -6621,6 +9057,7 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                messageID: string;
                 text: string;
             };
         };
@@ -6631,8 +9068,40 @@ export interface components {
             properties: {
                 timestamp: number;
                 sessionID: string;
+                messageID: string;
+                /** @enum {string} */
+                reason: "auto" | "manual";
                 text: string;
-                include?: string;
+                recent: string;
+            };
+        };
+        EventSessionNextRevertStaged: {
+            id: string;
+            /** @enum {string} */
+            type: "session.next.revert.staged";
+            properties: {
+                timestamp: number;
+                sessionID: string;
+                revert: components["schemas"]["RevertState"];
+            };
+        };
+        EventSessionNextRevertCleared: {
+            id: string;
+            /** @enum {string} */
+            type: "session.next.revert.cleared";
+            properties: {
+                timestamp: number;
+                sessionID: string;
+            };
+        };
+        EventSessionNextRevertCommitted: {
+            id: string;
+            /** @enum {string} */
+            type: "session.next.revert.committed";
+            properties: {
+                timestamp: number;
+                sessionID: string;
+                messageID: string;
             };
         };
         EventMessagePartDelta: {
@@ -6662,7 +9131,7 @@ export interface components {
             type: "session.error";
             properties: {
                 sessionID?: string;
-                error?: components["schemas"]["ProviderAuthError"] | components["schemas"]["UnknownError"] | components["schemas"]["MessageOutputLengthError"] | components["schemas"]["MessageAbortedError"] | components["schemas"]["StructuredOutputError"] | components["schemas"]["ContextOverflowError"] | components["schemas"]["APIError"];
+                error?: components["schemas"]["ProviderAuthError"] | components["schemas"]["UnknownError"] | components["schemas"]["MessageOutputLengthError"] | components["schemas"]["MessageAbortedError"] | components["schemas"]["StructuredOutputError"] | components["schemas"]["ContextOverflowError"] | components["schemas"]["ContentFilterError"] | components["schemas"]["APIError"];
             };
         };
         EventInstallationUpdated: {
@@ -6689,31 +9158,11 @@ export interface components {
                 file: string;
             };
         };
-        EventAccountAdded: {
+        EventReferenceUpdated: {
             id: string;
             /** @enum {string} */
-            type: "account.added";
-            properties: {
-                account: components["schemas"]["AuthInfo"];
-            };
-        };
-        EventAccountRemoved: {
-            id: string;
-            /** @enum {string} */
-            type: "account.removed";
-            properties: {
-                account: components["schemas"]["AuthInfo"];
-            };
-        };
-        EventAccountSwitched: {
-            id: string;
-            /** @enum {string} */
-            type: "account.switched";
-            properties: {
-                serviceID: string;
-                from?: string;
-                to?: string;
-            };
+            type: "reference.updated";
+            properties: Record<string, never>;
         };
         EventPermissionV2Asked: {
             id: string;
@@ -6737,6 +9186,22 @@ export interface components {
                 sessionID: string;
                 requestID: string;
                 reply: components["schemas"]["PermissionV2Reply"];
+            };
+        };
+        EventPluginAdded: {
+            id: string;
+            /** @enum {string} */
+            type: "plugin.added";
+            properties: {
+                id: string;
+            };
+        };
+        EventProjectDirectoriesUpdated: {
+            id: string;
+            /** @enum {string} */
+            type: "project.directories.updated";
+            properties: {
+                projectID: string;
             };
         };
         EventFileWatcherUpdated: {
@@ -6884,14 +9349,6 @@ export interface components {
                 messageID: string;
             };
         };
-        EventProjectDirectoriesUpdated: {
-            id: string;
-            /** @enum {string} */
-            type: "project.directories.updated";
-            properties: {
-                projectID: string;
-            };
-        };
         EventProjectUpdated: {
             id: string;
             /** @enum {string} */
@@ -6899,24 +9356,29 @@ export interface components {
             properties: {
                 id: string;
                 worktree: string;
-                /** @enum {string} */
-                vcs?: "git";
+                vcs?: components["schemas"]["ProjectVcs"];
                 name?: string;
-                icon?: {
-                    url?: string;
-                    override?: string;
-                    color?: string;
-                };
-                commands?: {
-                    /** @description Startup script to run when creating a new workspace (worktree) */
-                    start?: string;
-                };
-                time: {
-                    created: number;
-                    updated: number;
-                    initialized?: number;
-                };
+                icon?: components["schemas"]["ProjectIcon"];
+                commands?: components["schemas"]["ProjectCommands"];
+                time: components["schemas"]["ProjectTime"];
                 sandboxes: string[];
+            };
+        };
+        EventSessionStatus: {
+            id: string;
+            /** @enum {string} */
+            type: "session.status";
+            properties: {
+                sessionID: string;
+                status: components["schemas"]["SessionStatus"];
+            };
+        };
+        EventSessionIdle: {
+            id: string;
+            /** @enum {string} */
+            type: "session.idle";
+            properties: {
+                sessionID: string;
             };
         };
         EventQuestionAsked: {
@@ -6950,23 +9412,6 @@ export interface components {
                 requestID: string;
             };
         };
-        EventSessionStatus: {
-            id: string;
-            /** @enum {string} */
-            type: "session.status";
-            properties: {
-                sessionID: string;
-                status: components["schemas"]["SessionStatus"];
-            };
-        };
-        EventSessionIdle: {
-            id: string;
-            /** @enum {string} */
-            type: "session.idle";
-            properties: {
-                sessionID: string;
-            };
-        };
         EventSessionCompacted: {
             id: string;
             /** @enum {string} */
@@ -6981,23 +9426,6 @@ export interface components {
             type: "vcs.branch.updated";
             properties: {
                 branch?: string;
-            };
-        };
-        EventWorktreeReady: {
-            id: string;
-            /** @enum {string} */
-            type: "worktree.ready";
-            properties: {
-                name: string;
-                branch?: string;
-            };
-        };
-        EventWorktreeFailed: {
-            id: string;
-            /** @enum {string} */
-            type: "worktree.failed";
-            properties: {
-                message: string;
             };
         };
         EventWorkspaceReady: {
@@ -7026,6 +9454,23 @@ export interface components {
                 status: "connected" | "connecting" | "disconnected" | "error";
             };
         };
+        EventWorktreeReady: {
+            id: string;
+            /** @enum {string} */
+            type: "worktree.ready";
+            properties: {
+                name: string;
+                branch?: string;
+            };
+        };
+        EventWorktreeFailed: {
+            id: string;
+            /** @enum {string} */
+            type: "worktree.failed";
+            properties: {
+                message: string;
+            };
+        };
         EventServerConnected: {
             id: string;
             /** @enum {string} */
@@ -7037,6 +9482,36 @@ export interface components {
             /** @enum {string} */
             type: "global.disposed";
             properties: Record<string, never>;
+        };
+        CredentialOAuth: {
+            /** @enum {string} */
+            type: "oauth";
+            methodID: string;
+            refresh: string;
+            access: string;
+            expires: number;
+            metadata?: Record<string, never>;
+        };
+        CredentialKey: {
+            /** @enum {string} */
+            type: "key";
+            key: string;
+            metadata?: Record<string, never>;
+        };
+        SkillV2DirectorySource: {
+            /** @enum {string} */
+            type: "directory";
+            path: string;
+        };
+        SkillV2UrlSource: {
+            /** @enum {string} */
+            type: "url";
+            url: string;
+        };
+        SkillV2EmbeddedSource: {
+            /** @enum {string} */
+            type: "embedded";
+            skill: components["schemas"]["SkillV2Info"];
         };
         BadRequestError: {
             /** @enum {string} */
@@ -7165,6 +9640,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["effect_HttpApiError_BadRequest"] | components["schemas"]["InvalidRequestError"];
+                };
+            };
+        };
+    };
+    "experimental.controlPlane.moveSession": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    sessionID: string;
+                    destination: components["schemas"]["MoveSessionDestination"];
+                    moveChanges?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Session moved */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description MoveSessionError | InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MoveSessionError"] | components["schemas"]["InvalidRequestError"];
                 };
             };
         };
@@ -7332,7 +9842,7 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    target?: string;
+                    target: string;
                 };
             };
         };
@@ -7480,6 +9990,38 @@ export interface operations {
                             [key: string]: string;
                         };
                     };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestError"];
+                };
+            };
+        };
+    };
+    "experimental.capabilities.get": {
+        parameters: {
+            query?: {
+                directory?: string;
+                workspace?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Experimental capabilities */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExperimentalCapabilities"];
                 };
             };
             /** @description Bad request */
@@ -7854,6 +10396,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BadRequestError"];
+                };
+            };
+        };
+    };
+    "experimental.session.background": {
+        parameters: {
+            query?: {
+                directory?: string;
+                workspace?: string;
+            };
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Backgrounded subagents */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": boolean;
+                };
+            };
+            /** @description BadRequest | InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["effect_HttpApiError_BadRequest"] | components["schemas"]["InvalidRequestError"];
                 };
             };
         };
@@ -8964,15 +11540,8 @@ export interface operations {
             content: {
                 "application/json": {
                     name?: string;
-                    icon?: {
-                        url?: string;
-                        override?: string;
-                        color?: string;
-                    };
-                    commands?: {
-                        /** @description Startup script to run when creating a new workspace (worktree) */
-                        start?: string;
-                    };
+                    icon?: components["schemas"]["ProjectIcon"];
+                    commands?: components["schemas"]["ProjectCommands"];
                 };
             };
         };
@@ -9040,7 +11609,7 @@ export interface operations {
             };
         };
     };
-    "experimental.projectCopy.create": {
+    "experimental.projectCopy.generateName": {
         parameters: {
             query?: {
                 directory?: string;
@@ -9055,99 +11624,29 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @enum {string} */
-                    strategy: "git_worktree";
-                    directory: string;
+                    context?: string;
                 };
             };
         };
         responses: {
-            /** @description Project copy created */
+            /** @description Success */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ProjectCopyCopy"];
+                    "application/json": {
+                        name: string;
+                    };
                 };
             };
-            /** @description BadRequest | InvalidRequestError */
+            /** @description Bad request */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["effect_HttpApiError_BadRequest"] | components["schemas"]["InvalidRequestError"];
-                };
-            };
-        };
-    };
-    "experimental.projectCopy.remove": {
-        parameters: {
-            query?: {
-                directory?: string;
-                workspace?: string;
-            };
-            header?: never;
-            path: {
-                projectID: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    directory: string;
-                };
-            };
-        };
-        responses: {
-            /** @description Project copy removed */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description BadRequest | InvalidRequestError */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["effect_HttpApiError_BadRequest"] | components["schemas"]["InvalidRequestError"];
-                };
-            };
-        };
-    };
-    "experimental.projectCopy.refresh": {
-        parameters: {
-            query?: {
-                directory?: string;
-                workspace?: string;
-            };
-            header?: never;
-            path: {
-                projectID: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Project copies refreshed */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description BadRequest | InvalidRequestError */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["effect_HttpApiError_BadRequest"] | components["schemas"]["InvalidRequestError"];
+                    "application/json": components["schemas"]["BadRequestError"];
                 };
             };
         };
@@ -9423,10 +11922,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        ticket: string;
-                        expires_in: number;
-                    };
+                    "application/json": components["schemas"]["PtyTicketConnectToken"];
                 };
             };
             /** @description Bad request */
@@ -11941,11 +14437,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        workspaceID: string;
-                        /** @enum {string} */
-                        status: "connected" | "connecting" | "disconnected" | "error";
-                    }[];
+                    "application/json": components["schemas"]["WorkspaceEventConnectionStatus"][];
                 };
             };
             /** @description Bad request */
@@ -12081,6 +14573,49 @@ export interface operations {
             };
         };
     };
+    "v2.location.get": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Location.Info */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationInfo"];
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
     "v2.agent.list": {
         parameters: {
             query?: {
@@ -12145,13 +14680,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description V2SessionsResponse */
+            /** @description SessionsResponse */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["V2SessionsResponse"];
+                    "application/json": components["schemas"]["SessionsResponse"];
                 };
             };
             /** @description InvalidCursorError | InvalidRequestError */
@@ -12174,23 +14709,20 @@ export interface operations {
             };
         };
     };
-    "v2.session.prompt": {
+    "v2.session.create": {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                sessionID: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
                 "application/json": {
                     id?: string;
-                    prompt: components["schemas"]["Prompt"];
-                    /** @enum {string} */
-                    delivery?: "steer" | "queue";
-                    resume?: boolean;
+                    agent?: string;
+                    model?: components["schemas"]["ModelRef"];
+                    location?: components["schemas"]["LocationRef"];
                 };
             };
         };
@@ -12202,7 +14734,91 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data: components["schemas"]["SessionMessageUser"];
+                        data: components["schemas"]["SessionV2Info"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.session.active": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            [key: string]: components["schemas"]["SessionActive"];
+                        };
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.session.get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["SessionV2Info"];
                     };
                 };
             };
@@ -12230,7 +14846,174 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"];
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.switchAgent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    agent: string;
+                };
+            };
+        };
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.switchModel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    model: components["schemas"]["ModelRef"];
+                };
+            };
+        };
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.prompt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    id?: string;
+                    prompt: components["schemas"]["PromptInput"];
+                    /** @enum {string} */
+                    delivery?: "steer" | "queue";
+                    resume?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["SessionInputAdmitted"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
             /** @description ConflictError */
@@ -12286,7 +15069,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"];
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
             /** @description ServiceUnavailableError */
@@ -12342,7 +15125,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"];
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
             /** @description ServiceUnavailableError */
@@ -12352,6 +15135,176 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ServiceUnavailableError"];
+                };
+            };
+        };
+    };
+    "v2.session.revert.stage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    messageID: string;
+                    files?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["RevertState"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description MessageNotFoundError | SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageNotFoundError"] | components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+            /** @description UnknownError */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnknownError1"];
+                };
+            };
+        };
+    };
+    "v2.session.revert.clear": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+            /** @description UnknownError */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnknownError1"];
+                };
+            };
+        };
+    };
+    "v2.session.revert.commit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
         };
@@ -12402,7 +15355,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"];
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
             /** @description UnknownError */
@@ -12412,6 +15365,212 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnknownError1"];
+                };
+            };
+        };
+    };
+    "v2.session.history": {
+        parameters: {
+            query?: {
+                limit?: string;
+                after?: string;
+            };
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description SessionHistory */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionHistory"];
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.events": {
+        parameters: {
+            query?: {
+                after?: string;
+            };
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": {
+                        id: string;
+                        event: string;
+                        data: components["schemas"]["SessionDurableEventStream"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.interrupt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.message": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+                messageID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["SessionMessage"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError | MessageNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageNotFoundError"] | components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
         };
@@ -12431,13 +15590,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description V2SessionMessagesResponse */
+            /** @description SessionMessagesResponse */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["V2SessionMessagesResponse"];
+                    "application/json": components["schemas"]["SessionMessagesResponse"];
                 };
             };
             /** @description InvalidCursorError | InvalidRequestError */
@@ -12464,7 +15623,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"];
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
             /** @description UnknownError */
@@ -12654,6 +15813,440 @@ export interface operations {
             };
         };
     };
+    "v2.integration.list": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["IntegrationInfo"][];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.integration.get": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                integrationID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["IntegrationInfo"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.integration.connect.key": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                integrationID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    key: string;
+                    label?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"] | components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.integration.connect.oauth": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                integrationID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    methodID: string;
+                    inputs: {
+                        [key: string]: string;
+                    };
+                    label?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["IntegrationAttempt"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"] | components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.integration.attempt.status": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                attemptID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["IntegrationAttemptStatus"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.integration.attempt.cancel": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                attemptID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.integration.attempt.complete": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                attemptID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    code?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"] | components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.credential.remove": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                credentialID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.credential.update": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                credentialID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    label: string;
+                };
+            };
+        };
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
     "v2.permission.request.list": {
         parameters: {
             query?: {
@@ -12696,112 +16289,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedError"];
-                };
-            };
-        };
-    };
-    "v2.session.permission.list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                sessionID: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["PermissionV2Request"][];
-                    };
-                };
-            };
-            /** @description InvalidRequestError */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InvalidRequestError"];
-                };
-            };
-            /** @description UnauthorizedError */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UnauthorizedError"];
-                };
-            };
-            /** @description SessionNotFoundError */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"];
-                };
-            };
-        };
-    };
-    "v2.session.permission.reply": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                sessionID: string;
-                requestID: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    reply: components["schemas"]["PermissionV2Reply"];
-                    message?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description <No Content> */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description InvalidRequestError */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InvalidRequestError"];
-                };
-            };
-            /** @description UnauthorizedError */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UnauthorizedError"];
-                };
-            };
-            /** @description SessionNotFoundError | PermissionNotFoundError */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["PermissionNotFoundError"];
                 };
             };
         };
@@ -12886,15 +16373,237 @@ export interface operations {
             };
         };
     };
+    "v2.session.permission.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PermissionV2Request"][];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.permission.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    id?: string;
+                    action: string;
+                    resources: string[];
+                    save?: string[];
+                    metadata?: Record<string, never>;
+                    source?: components["schemas"]["PermissionV2Source"];
+                    agent?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            id: string;
+                            effect: components["schemas"]["PermissionV2Effect"];
+                        };
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.permission.get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+                requestID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PermissionV2Request"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError | PermissionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermissionNotFoundError"] | components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.session.permission.reply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+                requestID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    reply: components["schemas"]["PermissionV2Reply"];
+                    message?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError | PermissionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermissionNotFoundError"] | components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
     "v2.fs.read": {
         parameters: {
-            query: {
+            query?: {
                 location?: {
                     directory?: string;
                     workspace?: string;
                 };
-                path: string;
-                reference?: string;
             };
             header?: never;
             path?: never;
@@ -12908,10 +16617,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        location: components["schemas"]["LocationInfo"];
-                        data: components["schemas"]["FileSystemTextContent"] | components["schemas"]["FileSystemBinaryContent"];
-                    };
+                    "application/octet-stream": string;
                 };
             };
             /** @description InvalidRequestError */
@@ -12942,7 +16648,55 @@ export interface operations {
                     workspace?: string;
                 };
                 path?: string;
-                reference?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["FileSystemEntry"][];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.fs.find": {
+        parameters: {
+            query: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+                query: string;
+                type?: "file" | "directory";
+                limit?: string;
             };
             header?: never;
             path?: never;
@@ -13076,25 +16830,20 @@ export interface operations {
     };
     "v2.event.subscribe": {
         parameters: {
-            query?: {
-                location?: {
-                    directory?: string;
-                    workspace?: string;
-                };
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description Event stream */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "text/event-stream": string;
+                    "text/event-stream": components["schemas"]["V2Event"];
                 };
             };
             /** @description InvalidRequestError */
@@ -13113,6 +16862,415 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.pty.list": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["Pty"][];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.pty.create": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    command?: string;
+                    args?: string[];
+                    cwd?: string;
+                    title?: string;
+                    env?: {
+                        [key: string]: string;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["Pty"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.pty.get": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                ptyID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["Pty"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description PtyNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PtyNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.pty.update": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                ptyID: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    title?: string;
+                    size?: {
+                        rows: number;
+                        cols: number;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["Pty"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description PtyNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PtyNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.pty.remove": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                ptyID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description PtyNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PtyNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.pty.connectToken": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                ptyID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["PtyTicketConnectToken"];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description ForbiddenError */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ForbiddenError"];
+                };
+            };
+            /** @description PtyNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PtyNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.pty.connect": {
+        parameters: {
+            query?: {
+                "location[directory]"?: string;
+                "location[workspace]"?: string;
+                cursor?: string;
+                ticket?: string;
+            };
+            header?: never;
+            path: {
+                ptyID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": boolean;
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description ForbiddenError */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ForbiddenError"];
+                };
+            };
+            /** @description PtyNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PtyNotFoundError"];
                 };
             };
         };
@@ -13159,6 +17317,57 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.session.question.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["QuestionV2Request"][];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+            /** @description SessionNotFoundError */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
         };
@@ -13210,7 +17419,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["QuestionNotFoundError"];
+                    "application/json": components["schemas"]["QuestionNotFoundError"] | components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
                 };
             };
         };
@@ -13258,7 +17467,172 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SessionNotFoundError"] | components["schemas"]["QuestionNotFoundError"];
+                    "application/json": components["schemas"]["QuestionNotFoundError"] | components["schemas"]["SessionNotFoundError"] | components["schemas"]["SessionNotFoundError"];
+                };
+            };
+        };
+    };
+    "v2.reference.list": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        location: components["schemas"]["LocationInfo"];
+                        data: components["schemas"]["ReferenceInfo"][];
+                    };
+                };
+            };
+            /** @description InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidRequestError"];
+                };
+            };
+            /** @description UnauthorizedError */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedError"];
+                };
+            };
+        };
+    };
+    "v2.projectCopy.create": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                projectID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    strategy: string;
+                    directory: string;
+                    name?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description ProjectCopy.Copy */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProjectCopyCopy"];
+                };
+            };
+            /** @description ProjectCopyError | InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProjectCopyError"] | components["schemas"]["InvalidRequestError"];
+                };
+            };
+        };
+    };
+    "v2.projectCopy.remove": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                projectID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    directory: string;
+                    force: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ProjectCopyError | InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProjectCopyError"] | components["schemas"]["InvalidRequestError"];
+                };
+            };
+        };
+    };
+    "v2.projectCopy.refresh": {
+        parameters: {
+            query?: {
+                location?: {
+                    directory?: string;
+                    workspace?: string;
+                };
+            };
+            header?: never;
+            path: {
+                projectID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description <No Content> */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ProjectCopyError | InvalidRequestError */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProjectCopyError"] | components["schemas"]["InvalidRequestError"];
                 };
             };
         };
